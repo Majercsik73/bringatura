@@ -1,5 +1,10 @@
 <?php
 
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+
 /*
 INSERT INTO `users` (`id`, `email`, `password`, `createdAt`) VALUES (NULL, 'peldaEmail', 'peldaJelszo', '123');
 */
@@ -12,16 +17,16 @@ $path = $parsed['path'];
 
 $routes = [
     "GET" => [
-        "/Bringatura_MKK/" => "homeHandler",
-        "/Bringatura_MKK/varosok-megtekintese" => "cityListHandler",  //countryListHandler
-        "/Bringatura_MKK/utvonal-valaszto" => "routeSelectHandler" //routeListHandler
+        "/" => "homeHandler",         // "/Bringatura_MKK/" => "homeHandler",
+        "/varosok-megtekintese" => "cityListHandler",  //countryListHandler
+        "/utvonal-valaszto" => "routeSelectHandler" //routeListHandler
     ],
     "POST" => [
-        '/Bringatura_MKK/utvonal' => 'routeListHandler',
-        '/Bringatura_MKK/utvonal-km' => 'routeListKmHandler',
-        '/Bringatura_MKK/register' => 'registrationHandler',
-        '/Bringatura_MKK/login' => 'loginHandler',
-        '/Bringatura_MKK/logout' => 'logoutHandler'
+        '/utvonal' => 'routeListHandler',
+        '/utvonal-km' => 'routeListKmHandler',
+        '/register' => 'registrationHandler',
+        '/login' => 'loginHandler',
+        '/logout' => 'logoutHandler'
     ],
 ];
 
