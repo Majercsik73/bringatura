@@ -4,6 +4,8 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
+require_once "views/vendor/autoload.php";
+use Dompdf\Dompdf;
 
 /*
 INSERT INTO `users` (`id`, `email`, `password`, `createdAt`) VALUES (NULL, 'peldaEmail', 'peldaJelszo', '123');
@@ -17,13 +19,16 @@ $path = $parsed['path'];
 
 $routes = [
     "GET" => [
-        "/" => "homeHandler",         // "/Bringatura_MKK/" => "homeHandler",
-        "/varosok-megtekintese" => "cityListHandler",  //countryListHandler
-        "/utvonal-valaszto" => "routeSelectHandler" //routeListHandler
+        "/Bringatura_MKK/" => "homeHandler",         // "/Bringatura_MKK/" => "homeHandler",
+        "/Bringatura_MKK/varosok-megtekintese" => "cityListHandler",  //countryListHandler
+        "/Bringatura_MKK/utvonal-valaszto" => "routeSelectHandler",
+        '/Bringatura_MKK/generatePdf' => 'generatePdfHandler', //routeListHandler
     ],
     "POST" => [
-        '/utvonal' => 'routeListHandler',
-        '/utvonal-km' => 'routeListKmHandler',
+        '/Bringatura_MKK/utvonal' => 'routeListHandler',
+        '/Bringatura_MKK/utvonal-km' => 'routeListKmHandler',
+        
+        '/Bringatura_MKK/genPdf' => 'htmlToPdfHandler',
         '/register' => 'registrationHandler',
         '/login' => 'loginHandler',
         '/logout' => 'logoutHandler'
@@ -33,6 +38,45 @@ $routes = [
 $handlerFunction = $routes[$method][$path] ?? "notFoundHandler"; 
 
 $handlerFunction();
+
+function htmlToPdfHandler()
+{
+    $dompdf = new Dompdf();
+
+    $dompdf->set_option('enable_remote', TRUE);
+    $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/generatePdf?');
+    //$html = file_get_contents('http://localhost/Bringatura_MKK/varosok-megtekintese?');
+    //$dompdf->loadHtml($html);
+    
+    $dompdf->setPaper('A4', 'landscape');
+    //$dompdf->setFont('Arial', 'ital', 8);
+    // Render the HTML as PDF
+    $dompdf->render();
+    
+    // Output the generated PDF to Browser
+    $dompdf->stream('harmadik.pdf');
+}
+
+function generatePdfHandler()
+{
+    $pdo = getConnection();
+
+    $statement = $pdo->prepare('SELECT * FROM fooldal');
+    $statement->execute();
+    $telepulesek = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+    /*echo"<pre>";
+    var_dump($telepulesek);*/
+    echo compileTemplate('Pdf.phtml', [
+        'content' => compileTemplate('cityList.phtml',[
+            'telepulesek' => $telepulesek,
+        ])
+        //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+    ]);
+    //htmlToPdfHandler();
+}
+
+
 
 function getPathWithId($url)
 { 
@@ -478,6 +522,7 @@ function routeSelectHandler()
         ])
         //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
+
 }
 
 function cityListHandler()
@@ -496,6 +541,7 @@ function cityListHandler()
         ])
         //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
+    
 }
 
 function homeHandler()
