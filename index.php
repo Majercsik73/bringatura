@@ -4,6 +4,7 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
+require "basicGlobalRoutes.php";
 require_once "views/vendor/autoload.php";
 use Dompdf\Dompdf;
 
@@ -24,7 +25,7 @@ $routes = [
         "/Bringatura_MKK/varosok-megtekintese" => "cityListHandler",  //countryListHandler
         "/Bringatura_MKK/utvonal-valaszto" => "routeSelectHandler",
         '/Bringatura_MKK/generatePdf' => 'generatePdfHandler', //routeListHandler
-    ],
+    ],  
     "POST" => [
         '/Bringatura_MKK/utvonal' => 'routeListHandler',
         '/Bringatura_MKK/utvonal-km' => 'routeListKmHandler',
@@ -47,6 +48,7 @@ function plannerHandler()
     ]);
 }
 
+/*
 function htmlToPdfHandler()
 {
     $dompdf = new Dompdf();
@@ -67,6 +69,7 @@ function htmlToPdfHandler()
 
 function generatePdfHandler()
 {
+    
     $pdo = getConnection();
 
     $statement = $pdo->prepare('SELECT * FROM fooldal');
@@ -74,7 +77,7 @@ function generatePdfHandler()
     $telepulesek = $statement->fetchAll(PDO::FETCH_ASSOC);
     
     /*echo"<pre>";
-    var_dump($telepulesek);*/
+    var_dump($telepulesek);
     echo compileTemplate('Pdf.phtml', [
         'content' => compileTemplate('pdfSite.phtml',[
             'telepulesek' => $telepulesek,
@@ -84,7 +87,7 @@ function generatePdfHandler()
     //htmlToPdfHandler();
 }
 
-
+*/
 
 function getPathWithId($url)
 { 
@@ -531,6 +534,7 @@ function routeSelectHandler()
 
 }
 
+/*
 function cityListHandler()
 {
     $pdo = getConnection();
@@ -538,9 +542,11 @@ function cityListHandler()
     $statement = $pdo->prepare('SELECT * FROM fooldal');
     $statement->execute();
     $telepulesek = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    
     
     /*echo"<pre>";
-    var_dump($telepulesek);*/
+    var_dump($telepulesek);
     echo compileTemplate('wrapper.phtml', [
         'content' => compileTemplate('cityList.phtml',[
             'telepulesek' => $telepulesek,
@@ -548,7 +554,10 @@ function cityListHandler()
         //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
     
+    //generatePdfHandler($telepulesek);
+    
 }
+*/
 
 function homeHandler()
 {

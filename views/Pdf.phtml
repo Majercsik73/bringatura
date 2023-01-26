@@ -17,15 +17,12 @@
 <body>
     <h1>Bringatúra_MKK_PDF</h1>
     <form method="post" action="/Bringatura_MKK/genPdf">
-        <button type="submit" name="gen-pdf" class="btn btn-sm btn-secondary m-2">PDF Mentése</button>
+        <button type="submit" name="gen-pdf" class="btn btn-sm btn-warning m-2">PDF Mentése</button>
     </form>
-    <form action="/Bringatura_MKK/varosok-megtekintese" method="GET">
-    <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Városok listájához</button>
-</form>
+    <form action="/Bringatura_MKK/tervezo" method="GET">
+        <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
+    </form>
     <?= $params['content'] ?>
-    
-    
-
 </body>
 
 </html>
