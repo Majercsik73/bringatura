@@ -20,6 +20,7 @@ $path = $parsed['path'];
 $routes = [
     "GET" => [
         "/Bringatura_MKK/" => "homeHandler",         // "/Bringatura_MKK/" => "homeHandler",
+        "/Bringatura_MKK/tervezo" => "plannerHandler",
         "/Bringatura_MKK/varosok-megtekintese" => "cityListHandler",  //countryListHandler
         "/Bringatura_MKK/utvonal-valaszto" => "routeSelectHandler",
         '/Bringatura_MKK/generatePdf' => 'generatePdfHandler', //routeListHandler
@@ -27,7 +28,6 @@ $routes = [
     "POST" => [
         '/Bringatura_MKK/utvonal' => 'routeListHandler',
         '/Bringatura_MKK/utvonal-km' => 'routeListKmHandler',
-        
         '/Bringatura_MKK/genPdf' => 'htmlToPdfHandler',
         '/register' => 'registrationHandler',
         '/login' => 'loginHandler',
@@ -38,6 +38,14 @@ $routes = [
 $handlerFunction = $routes[$method][$path] ?? "notFoundHandler"; 
 
 $handlerFunction();
+
+function plannerHandler()
+{
+    echo compileTemplate('wrapper.phtml', [
+        'content' => compileTemplate('routePlanner.phtml',[]),
+        //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+    ]);
+}
 
 function htmlToPdfHandler()
 {
@@ -68,7 +76,7 @@ function generatePdfHandler()
     /*echo"<pre>";
     var_dump($telepulesek);*/
     echo compileTemplate('Pdf.phtml', [
-        'content' => compileTemplate('cityList.phtml',[
+        'content' => compileTemplate('pdfSite.phtml',[
             'telepulesek' => $telepulesek,
         ])
         //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
@@ -155,8 +163,6 @@ function emailCheck($email): bool
 
 function registrationHandler()
 {
-    
-
     if(isset($_POST["email"]) && !empty($_POST["email"]) && 
         isset($_POST["password"]) && !empty($_POST["password"]))
     {
