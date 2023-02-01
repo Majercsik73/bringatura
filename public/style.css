@@ -15,4 +15,19 @@ body {
 
 table, tr, th, td {
     border:1px solid black;
-  }
+}
+
+.form-select { 
+    background-color: lightyellow;
+    width: 200px;
+}
+
+.forcenter{
+    display: flex;
+    justify-content: center;
+}
+
+.form-label{
+    font-size: 20px;
+    font-weight: bold;
+}

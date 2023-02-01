@@ -4,7 +4,9 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-require "basicGlobalRoutes.php";
+require_once "basicGlobalRoutes.php";
+require_once "displayRouteList.php";
+require_once "globalRoutesByKm.php";
 require_once "views/vendor/autoload.php";
 use Dompdf\Dompdf;
 
@@ -24,12 +26,21 @@ $routes = [
         "/Bringatura_MKK/tervezo" => "plannerHandler",
         "/Bringatura_MKK/varosok-megtekintese" => "cityListHandler",  //countryListHandler
         "/Bringatura_MKK/utvonal-valaszto" => "routeSelectHandler",
-        '/Bringatura_MKK/generatePdf' => 'generatePdfHandler', //routeListHandler
-    ],  
-    "POST" => [
         '/Bringatura_MKK/utvonal' => 'routeListHandler',
         '/Bringatura_MKK/utvonal-km' => 'routeListKmHandler',
+        '/Bringatura_MKK/generatePdf' => 'generatePdfHandler', //routeListHandler
+        '/Bringatura_MKK/routeListPdf' => 'generateRouteListToPdfHandler',
+        '/Bringatura_MKK/routesByKmPdf' => 'routesByKmPdfHandler',
+        
+        
+    ],  
+    "POST" => [
+        //'/Bringatura_MKK/utvonal' => 'routeListHandler',
+        //'/Bringatura_MKK/utvonal-km' => 'routeListKmHandler',
         '/Bringatura_MKK/genPdf' => 'htmlToPdfHandler',
+        //"/Bringatura_MKK/routeListPdf" => 'generateRouteListToPdfHandler',
+        '/Bringatura_MKK/genRoutePdf' => 'routeListToPdfHandler',
+        '/Bringatura_MKK/genByKmPdf' => 'routeByKmToPdfHandler',
         '/register' => 'registrationHandler',
         '/login' => 'loginHandler',
         '/logout' => 'logoutHandler'
@@ -297,6 +308,7 @@ function singleCountryHandler()
     ]);
 }
 
+/*
 function routeListKmHandler()
 {
     $start = $_POST["startId"];
@@ -387,7 +399,7 @@ function routeListKmHandler()
 
     echo compileTemplate('wrapper.phtml', [
         'content' => compileTemplate('routeListKm.phtml',[
-            'osszesTelepules' => $osszesTelepules,
+            //'osszesTelepules' => $osszesTelepules,
             'telepulesek' => $telepulesek,
             'km' => $km,
             'start' => $start
@@ -395,6 +407,7 @@ function routeListKmHandler()
         //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
 }
+*/
 
 function dataSlider($telepulesek)
 {
@@ -431,6 +444,8 @@ function dataChange($telepulesek) //ellentétes irányban a 'fel' - 'le' érték
     return $telepulesek;
 }
 
+
+/*
 function routeListHandler()
 {
     var_dump($_POST["start"]);
@@ -514,6 +529,8 @@ function routeListHandler()
         //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
 }
+*/
+
 
 function routeSelectHandler()
 {

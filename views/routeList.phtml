@@ -2,13 +2,13 @@
 <div class="container">
     <hr>
     <h3>Start:</h3>
-    <h5><?= $params['telepulesek'][0]['telepules']?></h5>
+    <h5><?= $params['telepulesek'][0]['telepules']?></h5>  <!---->
     <?php 
         $hossz = count($params['telepulesek']);
     ?>
     <hr>
     <h3>Cél:</h3>
-    <h5><?= $params['telepulesek'][$hossz-1]['telepules']?></h5>
+    <h5><?= $params['telepulesek'][$hossz-1]['telepules']?></h5>  <!---->
     <hr>
     <h3>Útvonal:</h3>
     <table class="table table-striped">
@@ -17,8 +17,8 @@
                 <th style="display:none;">id</th>
                 <th>Település</th>
                 <th>Ellenőrzési pont</th>
-                <th>Loc.N:</th>
-                <th>Loc.E:</th>
+                <th>Loc. N:</th>
+                <th>Loc. E:</th>
                 <th>Útszámok</th>
                 <th>Táv</th>
                 <th>Fel</th>
@@ -67,7 +67,16 @@
         <?= $osszle ?>
         méter
     </h3>
-    <form method="get" action="/Bringatura_MKK/generatePdf" formtarget="_blank">
+    <form method="GET" action="/Bringatura_MKK/routeListPdf" formtarget="_blank">
+        <select class="form-select" name="start"  aria-label="Disabled select example" >
+            <option selected value=<?= $params['start']?>><?= $params['start']?></option>
+        </select>
+        <select class="form-select" name="touching"  aria-label="Disabled select example" >
+            <option selected value=<?= $params['touching']?>><?= $params['touching']?></option>
+        </select>
+        <select class="form-select" name="end"  aria-label="Disabled select example" >
+            <option selected value=<?= $params['end']?>><?= $params['end']?></option>
+        </select>
         <button type="submit" class="btn btn-sm btn-primary m-2">Generate PDF</button>
     </form>
     <form action="/Bringatura_MKK/tervezo" method="GET">
