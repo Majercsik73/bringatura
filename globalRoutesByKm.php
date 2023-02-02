@@ -91,6 +91,28 @@ function routeByKmDatas($start, $touch1, $touch2, $km)
     return $telepulesek;
 }
 
+
+function getPlanningByKmDatas($userid)
+{
+    $pdo = getConnection();
+    
+    $statement = $pdo->prepare('SELECT * FROM datasbykm WHERE id = ?');
+    $statement->execute([$userid]);
+    $datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+    //echo "<pre>";
+    //var_dump($datas);
+
+    return $datas;
+}
+
+function updatePlanningByKmDatas($userid, $startId, $touchId1, $touch2, $km)
+{
+    $pdo = getConnection();
+    $statement = $pdo->prepare('UPDATE `datasbykm` SET `startId`= ?,`touchId1`= ?,`touchId2`= ?, `km`= ? WHERE id = ?');
+    $statement ->execute([$startId, $touchId1, $touch2, $km, $userid]);
+    
+}
+
 function routeListKmHandler()
 {
     /*$start = $_POST["startId"];
@@ -132,15 +154,8 @@ function routesByKmPdfHandler()
     
     session_start();
 
-    if (!isset($_SESSION['startId']) && !isset($_GET["startId"]))
+    if (isset($_GET["startId"]))
     { 
-        $startId = 4; //$_GET["startId"];
-        $touchId1 = 2; //$_GET["touchId1"];
-        $touchId2 = 133; //$_GET["touchId2"];
-        $km = 120; //$_GET["km"];
-        var_dump('++++++++++++   Nincs session  routesByKmPdfHandler !!!!!!!!!!!!!!!!!');
-    }
-    else{
         $_SESSION['startId'] = $_GET["startId"];
         $_SESSION['touchId1'] = $_GET["touchId1"];
         $_SESSION['touchId2'] = $_GET["touchId2"];
@@ -150,9 +165,44 @@ function routesByKmPdfHandler()
         $touchId1 = $_GET["touchId1"];
         $touchId2 = $_GET["touchId2"];
         $km = $_GET["km"];
-        var_dump('Van session  routesByKmPdfHandler  !!!!!!!!!!!!!!!!!');
+
+        $userid = 1; //$SESSION['userid'];
+
+        updatePlanningByKmDatas($userid, $startId, $touchId1, $touchId2, $km);
+       
+        //Adatok kezelése helyi szerveren json-el
+        /*$datas = json_decode(file_get_contents("./datasByKm.json"), true);
+
+        //módosítjuk a lekérdezés adatait
+        $updatedDatas = [
+            "startId" => $_GET["startId"],
+            "touchId1" => $_GET["touchId1"],
+            "touchId2" => $_GET["touchId2"],
+            "km" => $_GET["km"]
+        ];
+        //majd a termékek megfelelő indexű elemét módosítjuk
+        $datas[0] = $updatedDatas;
+        
+        //a módosított tömböt visszaírjuk a json fájlba
+        file_put_contents("./datasByKm.json", json_encode($datas));
+        */
+        //echo "<pre>";
+        //var_dump($datas);
     }
     
+    else
+    {
+        $userid = 1; //$_SESSION["userid"];
+        $datas = getPlanningByKmDatas($userid);
+        
+        //$content = file_get_contents("./datasByKm.json");
+        //$datas = json_decode($content, true);
+        
+        $startId = $datas[0]["startId"];
+        $touchId1 = $datas[0]["touchId1"];
+        $touchId2 = $datas[0]["touchId2"];
+        $km = $datas[0]["km"];
+    }
     
     $telepulesek = routeByKmDatas($startId, $touchId1, $touchId2, $km);
     
@@ -165,24 +215,14 @@ function routesByKmPdfHandler()
             'touchId2' => $touchId2
             //'osszesTelepules' => $osszesTelepules,
         ])
-
-        //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+        
     ]);
+
+    //routeByKmToPdfHandler();
 }
 
 function routeByKmToPdfHandler()
 {
-    session_start();
-    /*$_SESSION['startId'] = $_GET["startId"];
-    $_SESSION['touchId1'] = $_GET["touchId1"];
-    $_SESSION['touchId2'] = $_GET["touchId2"];
-    $_SESSION['km'] = $_GET["km"];
-
-    $startId = $_GET["startId"];
-    $touchId1 = $_GET["touchId1"];
-    $touchId2 = $_GET["touchId2"];
-    $km = $_GET["km"];*/
-
     $dompdf = new Dompdf();
 
     $dompdf->set_option('enable_remote', TRUE);

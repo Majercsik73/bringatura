@@ -1,28 +1,17 @@
-<h1>Bringatúra_MKK_PDF</h1>                                     <!--   genPdf? -->
-    <?= var_dump('//////// routePdfSite.phtml ----  '.$_SESSION["start"]);
-    echo("   *****   ");
-    var_dump($_SESSION["touching"]);
-    echo("   *****   ");
-    var_dump($_SESSION["end"]);
-    
-    if (!isset($_SESSION['start']))
-    { 
-        var_dump('********** routePdfSite.phtml-ben nincs session!!!!!!!!!!');
-    }?>
+<h1>Bringatúra_MKK_PDF</h1>                                        
     
     <form method="POST" action="/Bringatura_MKK/genRoutePdf">
-        <select class="form-select" name="start"  aria-label="Disabled select example" >
-            <option value=<?= $_SESSION['start']?>><?= $_SESSION['start']?></option>
+        <select class="form-select" name="start" >
+            <option value=<?= $params['start']?>><?= $params['start']?></option>
         </select>
-        <select class="form-select" name="touching"  aria-label="Disabled select example" >
-            <option value=<?= $_SESSION['touching']?>><?= $_SESSION['touching']?></option>
+        <select class="form-select" name="touching" >
+            <option value=<?= $params['touching']?>><?= $params['touching']?></option>
         </select>
-        <select class="form-select" name="end"  aria-label="Disabled select example" >
-            <option value=<?= $_SESSION['end']?>><?= $_SESSION['end']?></option>
+        <select class="form-select" name="end" >
+            <option value=<?= $params['end']?>><?= $params['end']?></option>
         </select>
         <button type="submit" class="btn btn-sm btn-warning m-2">PDF Mentése</button>
     </form>
-<p>valamiiiiiiiiiiiiiiiii</p>
     <form action="/Bringatura_MKK/tervezo" method="GET">
         <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
     </form>

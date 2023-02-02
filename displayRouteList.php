@@ -81,6 +81,27 @@ function routeListDatas($start, $touching, $end)
    
 }
 
+function getPlanningDatas($id)
+{
+    $pdo = getConnection();
+    
+    $statement = $pdo->prepare('SELECT * FROM datas WHERE id = ?');
+    $statement->execute([$id]);
+    $datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+    //echo "<pre>";
+    //var_dump($datas);
+
+    return $datas;
+}
+
+function updatePlanningDatas($id, $start, $touching, $end)
+{
+    $pdo = getConnection();
+    $statement = $pdo->prepare('UPDATE `datas` SET `start`= ?,`touching`= ?,`end`= ? WHERE id = ?');
+    $statement ->execute([$start, $touching, $end, $id]);
+    
+}
+
 function routeListHandler()
 {
     /*var_dump($_GET["start"]);
@@ -116,29 +137,49 @@ function routeListHandler()
 
 function generateRouteListToPdfHandler()
 {
-    /*var_dum= $GET["start"]);
-    echo("   *****   ");
-    var_dum= $GET["touching"]);
-    echo("   *****   ");
-    var_dum= $GET["end"]);
-    
-    $telepulesek = routeListDatas($start, $touching, $end);*/
     session_start();
 
-    if (!isset($_SESSION['start']))
+    if (isset($_GET["start"]))
     { 
+        $_SESSION['start'] = $_GET["start"];
+        $_SESSION['touching'] = $_GET["touching"];
+        $_SESSION['end'] = $_GET["end"];
+
         $start = $_GET["start"];
         $touching = $_GET["touching"];
-        $end = $_GET["end"]; 
-        var_dump('++++++++++++   Nincs session  generateRouteListToPdfHandler !!!!!!!!!!!!!!!!!');
+        $end = $_GET["end"];
+
+        $userid = 1; //$SESSION['userid'];
+
+        updatePlanningDatas($userid, $start, $touching, $end);
+
+        /*
+        //Adatok kezelése helyi szerveren json-el
+        $datas = json_decode(file_get_contents("./datasList.json"), true);
+
+        //módosítjuk a lekérdezés adatait
+        $updatedDatas = [
+            "start" => $_GET["start"],
+            "touching" => $_GET["touching"],
+            "end" => $_GET["end"]
+        ];
+        //majd a termékek megfelelő indexű elemét módosítjuk
+        $datas[0] = $updatedDatas;
+        
+        //a módosított tömböt visszaírjuk a json fájlba
+        file_put_contents("./datasList.json", json_encode($datas));
+        */
     }
-    else{
-        $start = $_SESSION["start"];
-        $touching = $_SESSION["touching"];
-        $end = $_SESSION["end"];
-        var_dump('Van session  generateRouteListToPdfHandler  !!!!!!!!!!!!!!!!!');
+    else
+    {
+        $userid = 1; //$_SESSION["userid"];
+        //$content = file_get_contents("./datasList.json");
+        $datas = getPlanningDatas($userid); //json_decode($content, true);
+        
+        $start = $datas[0]["start"]; //$_GET["startId"];
+        $touching = $datas[0]["touching"]; //$_GET; //$_GET["touchId1"];
+        $end = $datas[0]["end"]; //$_GET; //$_GET["touchId2"];
     }
-    
     
     $telepulesek = routeListDatas($start, $touching, $end);
     
@@ -158,22 +199,7 @@ function generateRouteListToPdfHandler()
 
 function routeListToPdfHandler()
 {
-    session_start();
-/*
-    if (!isset($_SESSION['start']) && !isset($_GET["start"]))
-    { 
-        $start = $_GET["start"];
-        $touching = $_GET["touching"];
-        $end = $_GET["end"]; 
-        var_dump('++++++++++++   Nincs session  routeListPdfHandler !!!!!!!!!!!!!!!!!');
-    }
-    else{
-        $start = $_SESSION["start"];
-        $touching = $_SESSION["touching"];
-        $end = $_SESSION["end"];
-        var_dump('Van session  routeListPdfHandler  !!!!!!!!!!!!!!!!!');
-    }
-*/
+
     $dompdf = new Dompdf();
 
     $dompdf->set_option('enable_remote', TRUE);

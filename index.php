@@ -35,12 +35,14 @@ $routes = [
         
     ],  
     "POST" => [
+        
         //'/Bringatura_MKK/utvonal' => 'routeListHandler',
         //'/Bringatura_MKK/utvonal-km' => 'routeListKmHandler',
         '/Bringatura_MKK/genPdf' => 'htmlToPdfHandler',
         //"/Bringatura_MKK/routeListPdf" => 'generateRouteListToPdfHandler',
         '/Bringatura_MKK/genRoutePdf' => 'routeListToPdfHandler',
         '/Bringatura_MKK/genByKmPdf' => 'routeByKmToPdfHandler',
+        
         '/register' => 'registrationHandler',
         '/login' => 'loginHandler',
         '/logout' => 'logoutHandler'
