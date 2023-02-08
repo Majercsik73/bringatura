@@ -1,8 +1,17 @@
 
-
+<h2><?=$params['userId']?></h2>
 <div class="container">
-    <div >
+    <div class="container-fluid">
         <hr>
+        <form action="/Bringatura_MKK/utvonal-saved" method="GET">
+            <div class="forcenter">
+                <select class="form-select" name="userid" >
+                    <option selected value=<?= $params['userId']?>><?= $params['userId']?></option>
+                </select>
+                <button type="submit" class="btn btn-warning">Mutasd a mentett utat</button>
+            </div>
+        </form>
+        <br />
         <form action="/Bringatura_MKK/utvonal" method="GET">  <!--class="row g-3" -->
             <div class="forcenter">
                 <label class="form-label">Start: </label>

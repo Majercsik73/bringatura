@@ -29,8 +29,12 @@
 <?php endif ?>
 
 <?php if ($params['isRegistration'] || $params['info'] === "existingEmail" || $params['info'] === "noData") : ?>
-    <form action="/KODB_PHP15_Orszagok/register" method="POST"> 
-    
+    <form action="/Bringatura_MKK/register" method="POST"> 
+    <label class="w-100">
+        Felhasználónév:
+        <input class="form-control" type="text" name="name">
+    </label>
+
     <label class="w-100">
         Email cím:
         <input class="form-control" type="email" name="email">
@@ -42,11 +46,11 @@
     </label>
     <button type="submit" class="btn btn-success form-control">Regisztráció</button>
     Van már felhasználói fiókod?
-    <a href="<?= $params['url'] ?>">Bejelentkezés</a>
+    <a href="<?= $params['url'] ?>?">Bejelentkezés</a>
     </form>
 
 <?php else : ?>
-    <form action="/KODB_PHP15_Orszagok/login" method="POST">
+    <form action="/Bringatura_MKK/login" method="POST">
     <label class="w-100">
         Email cím:
         <input class="form-control" type="email" name="email">

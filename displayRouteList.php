@@ -118,10 +118,14 @@ function routeListHandler()
     $start = $_GET["start"];
     $touching = $_GET["touching"];
     $end = $_GET["end"];
-    
+
+    // a tervezés adatainak mentése
+    $userid = $_SESSION['userId'];
+    updatePlanningDatas($userid, $start, $touching, $end);
+
     $telepulesek = routeListDatas($start, $touching, $end);
     //echo"<pre>";
-    //var_dump($telepulesek);
+    //var_dump($userid);
     echo compileTemplate('wrapper.phtml', [
         'content' => compileTemplate('routeList.phtml',[
             'telepulesek' => $telepulesek,
@@ -129,9 +133,35 @@ function routeListHandler()
             'touching' => $touching,
             'end' => $end
             //'osszesTelepules' => $osszesTelepules,
-        ])
-        //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+        ]),
+        'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
+}
+
+function savedRouteHandler()
+{
+    session_start();
+    $userid = $_SESSION["userId"];
+    //$content = file_get_contents("./datasList.json");
+    $datas = getPlanningDatas($userid); //json_decode($content, true);
+        
+    $start = $datas[0]["start"]; //$_GET["startId"];
+    $touching = $datas[0]["touching"]; //$_GET; //$_GET["touchId1"];
+    $end = $datas[0]["end"]; //$_GET; //$_GET["touchId2"];
+
+    $telepulesek = routeListDatas($start, $touching, $end);
+    
+    echo compileTemplate('wrapper.phtml', [
+        'content' => compileTemplate('routeList.phtml',[
+            'telepulesek' => $telepulesek,
+            'start' => $start,
+            'touching' => $touching,
+            'end' => $end
+            //'osszesTelepules' => $osszesTelepules,
+        ]),
+        'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+    ]);
+
 }
 
 
@@ -139,17 +169,17 @@ function generateRouteListToPdfHandler()
 {
     session_start();
 
-    if (isset($_GET["start"]))
+    if (isset($_SESSION['userId']))
     { 
-        $_SESSION['start'] = $_GET["start"];
-        $_SESSION['touching'] = $_GET["touching"];
-        $_SESSION['end'] = $_GET["end"];
+        //$_SESSION['start'] = $_GET["start"];
+        //$_SESSION['touching'] = $_GET["touching"];
+        //$_SESSION['end'] = $_GET["end"];
 
         $start = $_GET["start"];
         $touching = $_GET["touching"];
         $end = $_GET["end"];
 
-        $userid = 1; //$SESSION['userid'];
+        $userid = $_SESSION['userId'];
 
         updatePlanningDatas($userid, $start, $touching, $end);
 
@@ -172,13 +202,10 @@ function generateRouteListToPdfHandler()
     }
     else
     {
-        $userid = 1; //$_SESSION["userid"];
-        //$content = file_get_contents("./datasList.json");
-        $datas = getPlanningDatas($userid); //json_decode($content, true);
-        
-        $start = $datas[0]["start"]; //$_GET["startId"];
-        $touching = $datas[0]["touching"]; //$_GET; //$_GET["touchId1"];
-        $end = $datas[0]["end"]; //$_GET; //$_GET["touchId2"];
+        // Ha az adatok a routeListToPdfHandler-ből jönnek:
+        $start = $_GET["start"];
+        $touching = $_GET["touching"];
+        $end = $_GET["end"];
     }
     
     $telepulesek = routeListDatas($start, $touching, $end);
@@ -190,20 +217,24 @@ function generateRouteListToPdfHandler()
             'touching' => $touching,
             'end' => $end
             //'osszesTelepules' => $osszesTelepules,
-        ])
-
-        //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+        ]),
+        'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
 }
 
 
 function routeListToPdfHandler()
 {
+    /*session_start();
+    $_SESSION['start'] = $_POST["start"];
+    $_SESSION['touching'] = $_POST["touching"];
+    $_SESSION['end'] = $_POST["end"];*/
 
     $dompdf = new Dompdf();
 
     $dompdf->set_option('enable_remote', TRUE);
-    $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routeListPdf?');//genRoutePdf
+    $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routeListPdf?start='.
+                            $_POST['start'].'&touching='.$_POST['touching'].'&end='.$_POST['end']);//genRoutePdf
     //$html = file_get_contents('views/test.phtml');
     //$dompdf->loadHtml($html);
     
@@ -214,7 +245,9 @@ function routeListToPdfHandler()
     
     // Output the generated PDF to Browser
     $dompdf->stream('negyedik.pdf', array("Attachment"=>0));
-
+    //echo"<pre>";
+    //var_dump($_POST['start'] ."  *****  ". $_POST['touching'] ." ***** ". $_POST['end']);
+    
 
 }
 

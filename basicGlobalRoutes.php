@@ -16,15 +16,15 @@ function adatok()
 
 function cityListHandler()
 {
-    
+    session_start();
     $telepulesek = adatok();
     /*echo"<pre>";
     var_dump($telepulesek);*/
     echo compileTemplate('wrapper.phtml', [
         'content' => compileTemplate('cityList.phtml',[
             'telepulesek' => $telepulesek,
-        ])
-        //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+        ]),
+        'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
     
     //generatePdfHandler($telepulesek);

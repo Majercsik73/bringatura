@@ -144,8 +144,8 @@ function routeListKmHandler()
             'startId' => $startId,
             'touchId1' => $touchId1,
             'touchId2' => $touchId2
-        ])
-        //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+        ]),
+        'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
 }
 
@@ -154,7 +154,7 @@ function routesByKmPdfHandler()
     
     session_start();
 
-    if (isset($_GET["startId"]))
+    if (isset($_SESSION['userId']))
     { 
         $_SESSION['startId'] = $_GET["startId"];
         $_SESSION['touchId1'] = $_GET["touchId1"];
@@ -166,7 +166,7 @@ function routesByKmPdfHandler()
         $touchId2 = $_GET["touchId2"];
         $km = $_GET["km"];
 
-        $userid = 1; //$SESSION['userid'];
+        $userid = $_SESSION['userId'];
 
         updatePlanningByKmDatas($userid, $startId, $touchId1, $touchId2, $km);
        
@@ -192,7 +192,14 @@ function routesByKmPdfHandler()
     
     else
     {
-        $userid = 1; //$_SESSION["userid"];
+        // Ha az adatok a routeByKmToPdfHandler-ből jönnek:
+        $startId = $_GET["startId"];
+        $touchId1 = $_GET["touchId1"];
+        $touchId2 = $_GET["touchId2"];
+        $km = $_GET["km"];
+        
+        /*
+        $userid = $_SESSION["userid"];
         $datas = getPlanningByKmDatas($userid);
         
         //$content = file_get_contents("./datasByKm.json");
@@ -201,7 +208,7 @@ function routesByKmPdfHandler()
         $startId = $datas[0]["startId"];
         $touchId1 = $datas[0]["touchId1"];
         $touchId2 = $datas[0]["touchId2"];
-        $km = $datas[0]["km"];
+        $km = $datas[0]["km"];*/
     }
     
     $telepulesek = routeByKmDatas($startId, $touchId1, $touchId2, $km);
@@ -223,10 +230,12 @@ function routesByKmPdfHandler()
 
 function routeByKmToPdfHandler()
 {
+
     $dompdf = new Dompdf();
 
     $dompdf->set_option('enable_remote', TRUE);
-    $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routesByKmPdf');//genRoutePdf
+    $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routesByKmPdf?startId='.$_POST["startId"].'&touchId1='.
+            $_POST["touchId1"].'&touchId2='.$_POST["touchId2"].'&km='.$_POST["km"]);//genRoutePdf
     //$html = file_get_contents('views/test.phtml');
     //$dompdf->loadHtml($html);
     
@@ -238,7 +247,8 @@ function routeByKmToPdfHandler()
     // Output the generated PDF to Browser
     $dompdf->stream('negyedik.pdf', array("Attachment"=>0));
 
-
+    //echo"<pre>";
+    //var_dump($_POST['start'] ."  *****  ". $_POST['touching'] ." ***** ". $_POST['end']);
 }
 
 ?>
