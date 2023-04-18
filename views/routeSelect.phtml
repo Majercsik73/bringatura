@@ -5,7 +5,7 @@
         <hr>
         <form action="/Bringatura_MKK/utvonal-saved" method="GET">
             <div class="forcenter">
-                <select class="form-select" name="userid" >
+                <select class="form-select" name="userid" hidden>
                     <option selected value=<?= $params['userId']?>><?= $params['userId']?></option>
                 </select>
                 <button type="submit" class="btn btn-warning">Mutasd a mentett utat</button>
@@ -14,7 +14,7 @@
         <br />
         <form action="/Bringatura_MKK/utvonal" method="GET">  <!--class="row g-3" -->
             <div class="forcenter">
-                <label class="form-label">Start: </label>
+                <label class="form-label">Indulás: </label>
             </div>
             <div class="forcenter">
                 <select class="form-select form-select-lg mb-3" name="start">
@@ -24,7 +24,7 @@
                 </select>
             </div>
             <div class="forcenter"> <!--class="col-auto"-->
-                <label class="form-label">Érintésével: </label>
+                <label class="form-label">Érintsd: </label>
             </div>
             <div class="forcenter">
                 <select class="form-select form-select-lg mb-3" name="touching">
@@ -34,7 +34,7 @@
                 </select>
             </div>
             <div class="forcenter">
-                <label class="form-label">Cél: </label>
+                <label class="form-label">Érkezés: </label>
             </div>
             <div class="forcenter">
                 <select class="form-select form-select-lg mb-3" name="end">
@@ -44,13 +44,22 @@
                 </select>
             </div>
             <div class="forcenter">
-                <button type="submit" class="btn btn-success">Mutasd az utat</button>
+                <button type="submit" class="btn btn-success">Mutasd az útvonalat</button>
             </div>
         </form>
         <hr>
+        <form action="/Bringatura_MKK/utvonal-km-saved" method="GET">
+            <div class="forcenter">
+                <select class="form-select" name="userid" hidden>
+                    <option selected value=<?= $params['userId']?>><?= $params['userId']?></option>
+                </select>
+                <button type="submit" class="btn btn-warning">Mutasd a mentett utat</button>
+            </div>
+        </form>
+        <br />
         <form action="/Bringatura_MKK/utvonal-km" method="GET">
             <div class="forcenter">
-                <label class="form-label">Start: </label>
+                <label class="form-label">Indulás: </label>
             </div>
             <div class="forcenter">
                 <select class="form-select form-select-lg mb-3" name="startId">
@@ -60,7 +69,7 @@
                 </select>
             </div>
             <div class="forcenter">
-                <label class="form-label">Érintésével: </label>
+                <label class="form-label">Érintsd: </label>
             </div>
             <div class="forcenter">
                 <select class="form-select form-select-lg mb-3" name="touchId1">
@@ -70,7 +79,7 @@
                 </select>
             </div>
             <div class="forcenter">
-                <label class="form-label">Érintésével: </label>
+                <label class="form-label">Érintsd: </label>
             </div>
             <div class="forcenter">
                 <select class="form-select form-select-lg mb-3" name="touchId2">
@@ -93,7 +102,7 @@
                 </select>
             </div>
             <div class="forcenter">
-                <button type="submit" class="btn btn-success">Mutasd az utat</button>
+                <button type="submit" class="btn btn-success">Mutasd az útvonalat</button>
             </div>
         </form>
         <hr>

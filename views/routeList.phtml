@@ -1,15 +1,41 @@
 <br>
 <div class="container">
     <hr>
-    <h3>Start:</h3>
-    <h5><?= $params['telepulesek'][0]['telepules']?></h5>  <!---->
+    <h3>Indulás:&nbsp;&nbsp;&nbsp;<?= $params['telepulesek'][0]['telepules']?></h3>
     <?php 
         $hossz = count($params['telepulesek']);
     ?>
     <hr>
-    <h3>Cél:</h3>
-    <h5><?= $params['telepulesek'][$hossz-1]['telepules']?></h5>  <!---->
+    <h3>Érkezés:&nbsp;&nbsp;&nbsp;<?= $params['telepulesek'][$hossz-1]['telepules']?></h3>
     <hr>
+    <?php if ($params['info'] === "savedDatas") : ?>
+        <div class="alert alert-success">
+            Adat mentés sikeres 
+        </div>
+    <?php endif ?>
+    <!-- Útvonal pdf-be mentése -->
+    <form method="POST" action="/Bringatura_MKK/genRoutePdf" formtarget="_blank">
+        <select class="form-select" name="start" hidden>
+            <option selected value=<?= $params['start']?>><?= $params['start']?></option>
+        </select>
+        <select class="form-select" name="touching" hidden>
+            <option selected value=<?= $params['touching']?>><?= $params['touching']?></option>
+        </select>
+        <select class="form-select" name="end" hidden>
+            <option selected value=<?= $params['end']?>><?= $params['end']?></option>
+        </select>
+        <button type="submit" class="btn btn-sm btn-warning m-2">Útvonal mentése PDF-ként</button>
+    </form>
+    <!-- Útvonal adatainak adatbázisba mentése -->
+    <form action="/Bringatura_MKK/utvonal-save" method="GET">
+        <button type="submit" class="btn btn-sm btn-success m-2">Útvonal mentése</button>
+    </form>
+
+    <form action="/Bringatura_MKK/utvonal-valaszto" method="GET">
+        <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
+    </form>
+    <br>
+    
     <h3>Útvonal:</h3>
     <table class="table table-striped">
         <thead >
@@ -19,10 +45,10 @@
                 <th>Ellenőrzési pont</th>
                 <th>Loc. N:</th>
                 <th>Loc. E:</th>
-                <th>Útszámok</th>
-                <th>Táv</th>
-                <th>Fel</th>
-                <th>Le</th>
+                <th>Útszám/ok</th>
+                <th>Táv (km)</th>
+                <th>Fel (m)</th>
+                <th>Le (m)</th>
             </tr>
         </thead>
         <tbody>
@@ -67,20 +93,4 @@
         <?= $osszle ?>
         méter
     </h3>
-    <form method="GET" action="/Bringatura_MKK/routeListPdf" formtarget="_blank">
-        <select class="form-select" name="start"  aria-label="Disabled select example" >
-            <option selected value=<?= $params['start']?>><?= $params['start']?></option>
-        </select>
-        <select class="form-select" name="touching"  aria-label="Disabled select example" >
-            <option selected value=<?= $params['touching']?>><?= $params['touching']?></option>
-        </select>
-        <select class="form-select" name="end"  aria-label="Disabled select example" >
-            <option selected value=<?= $params['end']?>><?= $params['end']?></option>
-        </select>
-        <button type="submit" class="btn btn-sm btn-primary m-2">Generate PDF</button>
-    </form>
-    <form action="/Bringatura_MKK/tervezo" method="GET">
-        <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
-    </form>
-    <br>
 </div>

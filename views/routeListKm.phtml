@@ -1,42 +1,33 @@
-<!-- <hr>
-<form class="row g-3" action="/utvonal-km" method="POST">
-    <div class="col-auto">
-    <label>Start: </label>
-        <select class="form-select form-select-lg mb-3" name="startId">
-            <?php foreach ($params['osszesTelepules'] as $telepules) : ?>
-                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-auto">
-        <label>Érintésével: </label>
-        <select class="form-select form-select-lg mb-3" name="touchId1">
-            <?php foreach ($params['osszesTelepules'] as $telepules) : ?>
-                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-auto">
-        <label>Érintésével: </label>
-        <select class="form-select form-select-lg mb-3" name="touchId2">
-            <?php foreach ($params['osszesTelepules'] as $telepules) : ?>
-                <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-    <div class="col-auto">
-        <select class="form-select form-select-lg mb-3" name="km">
-            <option value=60>60 km</option>
-            <option value=80>80 km</option>
-            <option value=100>100 km</option>
-            <option value=120>120 km</option>
-            <option value=140>140 km</option>
-            <option value=160>160 km</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-success">Mutasd az utat</button>
-</form> -->
+
 <hr>
+<?php if ($params['info'] === "savedDatas") : ?>
+    <div class="alert alert-success">Adat mentés sikeres</div>
+<?php endif ?>
+
+<form method="POST" action="/Bringatura_MKK/genByKmPdf" formtarget="_blank">
+    <select class="form-select" name="startId" hidden>
+        <option selected value=<?= $params['startId']?>><?= $params['startId']?></option>
+    </select>
+    <select class="form-select" name="touchId1" hidden>
+        <option selected value=<?= $params['touchId1']?>><?= $params['touchId1']?></option>
+    </select>
+    <select class="form-select" name="touchId2" hidden>
+        <option selected value=<?= $params['touchId2']?>><?= $params['touchId2']?></option>
+    </select>
+    <select class="form-select" name="km" hidden>
+        <option selected value=<?= $params['km']?>><?= $params['km']?></option>
+    </select>
+    <button type="submit" class="btn btn-sm btn-warning m-2">Útvonal mentése PDF-ként</button>
+</form>
+
+<!-- Útvonal adatainak adatbázisba mentése -->
+<form action="/Bringatura_MKK/utvonal-km-save" method="GET">
+        <button type="submit" class="btn btn-sm btn-success m-2">Útvonal mentése</button>
+</form>
+
+<form action="/Bringatura_MKK/utvonal-valaszto" method="GET">
+    <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
+</form>
 
 
 <h3>Útvonal:</h3>
@@ -225,23 +216,4 @@
 <h3>Összes le: <?= $osszle ?> méter </h3>
 <h3>Össztáv: <?= $ossztav ?> km</h3>
 <?php endif; ?>
-<hr>
-<form method="GET" action="/Bringatura_MKK/routesByKmPdf" formtarget="_blank">
-        <select class="form-select" name="startId"  aria-label="Disabled select example" >
-            <option selected value=<?= $params['startId']?>><?= $params['startId']?></option>
-        </select>
-        <select class="form-select" name="touchId1"  aria-label="Disabled select example" >
-            <option selected value=<?= $params['touchId1']?>><?= $params['touchId1']?></option>
-        </select>
-        <select class="form-select" name="touchId2"  aria-label="Disabled select example" >
-            <option selected value=<?= $params['touchId2']?>><?= $params['touchId2']?></option>
-        </select>
-        <select class="form-select" name="km"  aria-label="Disabled select example" >
-            <option selected value=<?= $params['km']?>><?= $params['km']?></option>
-        </select>
-        <button type="submit" class="btn btn-sm btn-primary m-2">Generate PDF</button>
-    </form>
-    <form action="/Bringatura_MKK/tervezo" method="GET">
-        <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
-    </form>
-    <br>
+<br>

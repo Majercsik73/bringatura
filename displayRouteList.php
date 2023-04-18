@@ -6,20 +6,8 @@ use Dompdf\Dompdf;
 
 function routeListDatas($start, $touching, $end)
 {
-    /*var_dump($_GET["start"]);
-    echo("   *****   ");
-    var_dump($_GET["touching"]);
-    echo("   *****   ");
-    var_dump($_GET["end"]);*/
-    /*$start = $GET["start"];
-    $touching = $GET["touching"];
-    $end = $GET["end"];*/
-
     $pdo = getConnection();
-    /*
-    $statement = $pdo->prepare('SELECT * FROM fooldal');
-    $statement->execute();
-    $osszesTelepules = $statement->fetchAll(PDO::FETCH_ASSOC);*/
+    
     // 8 * 10 * 12
     if ($start < $touching && $touching < $end)
     {
@@ -94,23 +82,26 @@ function getPlanningDatas($id)
     return $datas;
 }
 
-function updatePlanningDatas($id, $start, $touching, $end)
+function updateRoutePlanningHandler()
 {
+    session_start();
+
+    $id = $_SESSION['userId'];
+    $start = $_SESSION['start'];
+    $touching = $_SESSION['touching'];
+    $end = $_SESSION['end'];
+    
     $pdo = getConnection();
     $statement = $pdo->prepare('UPDATE `datas` SET `start`= ?,`touching`= ?,`end`= ? WHERE id = ?');
     $statement ->execute([$start, $touching, $end, $id]);
-    
+
+    header('Location:/Bringatura_MKK/utvonal?start='.$start.'&touching='.$touching.'&end='.$end.'&info=savedDatas');
 }
 
 function routeListHandler()
 {
-    /*var_dump($_GET["start"]);
-    echo("   *****   ");
-    var_dump($_GET["touching"]);
-    echo("   *****   ");
-    var_dump($_GET["end"]);*/
     session_start();
-    //$_SESSION['userId'] = $user['id']; 
+
     $_SESSION['start'] = $_GET["start"];
     $_SESSION['touching'] = $_GET["touching"];
     $_SESSION['end'] = $_GET["end"];
@@ -119,19 +110,15 @@ function routeListHandler()
     $touching = $_GET["touching"];
     $end = $_GET["end"];
 
-    // a tervezés adatainak mentése
-    $userid = $_SESSION['userId'];
-    updatePlanningDatas($userid, $start, $touching, $end);
-
     $telepulesek = routeListDatas($start, $touching, $end);
-    //echo"<pre>";
-    //var_dump($userid);
+    
     echo compileTemplate('wrapper.phtml', [
         'content' => compileTemplate('routeList.phtml',[
             'telepulesek' => $telepulesek,
             'start' => $start,
             'touching' => $touching,
-            'end' => $end
+            'end' => $end,
+            'info' => $_GET['info'] ?? ''
             //'osszesTelepules' => $osszesTelepules,
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
@@ -156,7 +143,8 @@ function savedRouteHandler()
             'telepulesek' => $telepulesek,
             'start' => $start,
             'touching' => $touching,
-            'end' => $end
+            'end' => $end,
+            'info' => $_GET['info'] ?? ''
             //'osszesTelepules' => $osszesTelepules,
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
@@ -169,44 +157,10 @@ function generateRouteListToPdfHandler()
 {
     session_start();
 
-    if (isset($_SESSION['userId']))
-    { 
-        //$_SESSION['start'] = $_GET["start"];
-        //$_SESSION['touching'] = $_GET["touching"];
-        //$_SESSION['end'] = $_GET["end"];
-
-        $start = $_GET["start"];
-        $touching = $_GET["touching"];
-        $end = $_GET["end"];
-
-        $userid = $_SESSION['userId'];
-
-        updatePlanningDatas($userid, $start, $touching, $end);
-
-        /*
-        //Adatok kezelése helyi szerveren json-el
-        $datas = json_decode(file_get_contents("./datasList.json"), true);
-
-        //módosítjuk a lekérdezés adatait
-        $updatedDatas = [
-            "start" => $_GET["start"],
-            "touching" => $_GET["touching"],
-            "end" => $_GET["end"]
-        ];
-        //majd a termékek megfelelő indexű elemét módosítjuk
-        $datas[0] = $updatedDatas;
-        
-        //a módosított tömböt visszaírjuk a json fájlba
-        file_put_contents("./datasList.json", json_encode($datas));
-        */
-    }
-    else
-    {
-        // Ha az adatok a routeListToPdfHandler-ből jönnek:
-        $start = $_GET["start"];
-        $touching = $_GET["touching"];
-        $end = $_GET["end"];
-    }
+    // Az adatok a routeListToPdfHandler-ből jönnek:
+    $start = $_GET["start"];
+    $touching = $_GET["touching"];
+    $end = $_GET["end"];
     
     $telepulesek = routeListDatas($start, $touching, $end);
     
@@ -216,7 +170,6 @@ function generateRouteListToPdfHandler()
             'start' => $start,
             'touching' => $touching,
             'end' => $end
-            //'osszesTelepules' => $osszesTelepules,
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
@@ -225,30 +178,18 @@ function generateRouteListToPdfHandler()
 
 function routeListToPdfHandler()
 {
-    /*session_start();
-    $_SESSION['start'] = $_POST["start"];
-    $_SESSION['touching'] = $_POST["touching"];
-    $_SESSION['end'] = $_POST["end"];*/
-
     $dompdf = new Dompdf();
 
     $dompdf->set_option('enable_remote', TRUE);
     $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routeListPdf?start='.
-                            $_POST['start'].'&touching='.$_POST['touching'].'&end='.$_POST['end']);//genRoutePdf
-    //$html = file_get_contents('views/test.phtml');
-    //$dompdf->loadHtml($html);
+                            $_POST['start'].'&touching='.$_POST['touching'].'&end='.$_POST['end']);
     
     $dompdf->setPaper('A4', 'landscape');
-    //$dompdf->setFont('Arial', 'ital', 8);
-    // Render the HTML as PDF
+    
     $dompdf->render();
     
-    // Output the generated PDF to Browser
-    $dompdf->stream('negyedik.pdf', array("Attachment"=>0));
-    //echo"<pre>";
-    //var_dump($_POST['start'] ."  *****  ". $_POST['touching'] ." ***** ". $_POST['end']);
+    $dompdf->stream('negyedik.pdf', array("Attachment"=>0)); // Attachment => nem menti egyből, külön lapon megnyitja
     
-
 }
 
 ?>
