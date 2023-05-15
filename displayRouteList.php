@@ -20,8 +20,8 @@ function routeListDatas($start, $touching, $end)
         $telepulesek[0]['fel'] = 0;
         $telepulesek[0]['le'] = 0;
     }
-    // 142 * 146 * 5 
-    elseif ($start < $touching && $touching > $end && $start > $end)
+    // 142 * 146 * 5   // 136 * 1 *10
+    elseif (($start < $touching && $touching > $end && $start > $end) || ($start > $end && $touching == 1))
     {
         $statement1 = $pdo->prepare('SELECT * FROM fooldal WHERE id BETWEEN 2 AND ? ');
         $statement1->execute([$end]);
@@ -39,6 +39,7 @@ function routeListDatas($start, $touching, $end)
         $telepulesek[0]['le'] = 0;
         //$telepulesek = dataSlider($telepulesek3);
     }
+
     // 112 * 80 * 70
     elseif($start > $touching && $touching > $end)
     {
