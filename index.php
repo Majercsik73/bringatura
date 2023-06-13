@@ -104,10 +104,11 @@ function registrationHandler()
             password_hash($_POST["password"], PASSWORD_DEFAULT),
             time()
         ]);
-
+        // az adatbázisban beállítjuk a kezdőértékeket az elmentett útvonalaknál
         insertNewUserPlanningDatas();
 
-        unset($_POST);
+        unset($_POST);// töröljük a globális változót
+        
         // A következő minden "header('Location:...)"-ben az '&info' elé azért kell a '?'(kérdőjel), mert
         //a getPathWithId levágja az eredetileg ott lévő '?'-et!!!
         header('Location: ' . getPathWithId($_SERVER['HTTP_REFERER']) . '?&info=registrationSuccessful');
