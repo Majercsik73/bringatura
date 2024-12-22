@@ -1,6 +1,8 @@
 <?php
-require_once "views/vendor/autoload.php";
 
+require_once "views/vendor/autoload.php";
+require_once "basicGlobalRoutes.php";
+require_once "globalRoutesByKm.php";
 use Dompdf\Dompdf;
 
 
@@ -154,6 +156,24 @@ function savedRouteHandler()
 }
 
 
+function routeListToPdfHandler()
+{
+    $dompdf = new Dompdf();
+
+    $dompdf->set_option('enable_remote', TRUE);
+    $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routeListPdf?start='.
+                            $_POST['start'].'&touching='.$_POST['touching'].'&end='.$_POST['end']);
+    // A fenti címmel a generatRouteListToPdfHandlerben történik a tényleges megjelenítés
+    
+    $dompdf->setPaper('A4', 'landscape');
+    
+    $dompdf->render();
+    
+    $dompdf->stream('negyedik.pdf', array("Attachment"=>0)); // Attachment => nem menti egyből, külön lapon megnyitja
+    
+}
+
+
 function generateRouteListToPdfHandler()
 {
     session_start();
@@ -175,22 +195,4 @@ function generateRouteListToPdfHandler()
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
 }
-
-
-function routeListToPdfHandler()
-{
-    $dompdf = new Dompdf();
-
-    $dompdf->set_option('enable_remote', TRUE);
-    $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routeListPdf?start='.
-                            $_POST['start'].'&touching='.$_POST['touching'].'&end='.$_POST['end']);
-    
-    $dompdf->setPaper('A4', 'landscape');
-    
-    $dompdf->render();
-    
-    $dompdf->stream('negyedik.pdf', array("Attachment"=>0)); // Attachment => nem menti egyből, külön lapon megnyitja
-    
-}
-
 ?>
