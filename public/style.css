@@ -1,17 +1,32 @@
 
 
 body {
-    background-color: rgba(252, 252, 253);
+    background-color: rgb(132, 132, 252);
 }
 
 .container {
-    background-color: rgba(252, 252, 253);
+    background-color: rgba(252, 252, 253, 0.9);
+    padding: 10px 40px 1px 40px;
+	margin-top: 40px;
+	margin-bottom: 60px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    font-size: large;
+    font-family:Arial;
 }
 
 .nav-link{
     font-size: 30px;
     font-weight: bold;
 }
+
+.navbar-collapse{
+    text-align: center;
+    margin: auto;
+    position: relative;
+  }
 
 table, tr, th, td {
     border:1px solid black;
