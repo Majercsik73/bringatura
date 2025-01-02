@@ -1,12 +1,12 @@
 
-<?php if($params['isAuthorized']): //csak akkor jelenik meg a gomb, ha be van jelentkezve ?>
+<?php if($params['isAuthorized']): //csak akkor jelenik meg a szöveg, ha be van jelentkezve ?>
     <h3>Bejelentkezve: <?=$params['userName']?></h3>
 <?php endif; ?>
 
 <div > <!-- class="container"  -->
     <div class="container-fluid">
         <hr>
-        <form action="/Bringatura_MKK/utvonal-saved" method="GET">
+        <form action="/Bringatura_MKK/utvonal-km-saved" method="GET">
             <div class="forcenter">
                 <select class="form-select" name="userid" hidden>
                     <option selected value=<?= $params['userId']?>><?= $params['userId']?></option>
@@ -15,35 +15,48 @@
             </div>
         </form>
         <br />
-        <form action="/Bringatura_MKK/utvonal" method="GET">  <!--class="row g-3" -->
+        <form action="/Bringatura_MKK/utvonal-km" method="GET">
             <div class="forcenter">
                 <label class="form-label">Indulás: </label>
             </div>
             <div class="forcenter">
-                <select class="form-select form-select-lg mb-3" name="start">
+                <select class="form-select form-select-lg mb-3" name="startId">
                     <?php foreach ($params['telepulesek'] as $telepules) : ?>
                         <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div class="forcenter"> <!--class="col-auto"-->
+            <div class="forcenter">
                 <label class="form-label">Érintsd: </label>
             </div>
             <div class="forcenter">
-                <select class="form-select form-select-lg mb-3" name="touching">
+                <select class="form-select form-select-lg mb-3" name="touchId1">
                     <?php foreach ($params['telepulesek'] as $telepules) : ?>
                         <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
             <div class="forcenter">
-                <label class="form-label">Érkezés: </label>
+                <label class="form-label">Érintsd: </label>
             </div>
             <div class="forcenter">
-                <select class="form-select form-select-lg mb-3" name="end">
+                <select class="form-select form-select-lg mb-3" name="touchId2">
                     <?php foreach ($params['telepulesek'] as $telepules) : ?>
                         <option value=<?= $telepules['id']?>><?= $telepules['telepules']?></option>
                     <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="forcenter">
+                <label class="form-label">Megteendő napi távolságok:</label>
+            </div>
+            <div class="forcenter">
+                <select class="form-select form-select-lg mb-3" name="km">
+                    <option value=60>60 km</option>
+                    <option value=80>80 km</option>
+                    <option value=100>100 km</option>
+                    <option value=120>120 km</option>
+                    <option value=140>140 km</option>
+                    <option value=160>160 km</option>
                 </select>
             </div>
             <div class="forcenter">

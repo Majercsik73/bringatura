@@ -37,47 +37,49 @@
     <br>
     
     <h3>Útvonal:</h3>
-    <table class="table table-striped">
-        <thead >
-            <tr>
-                <th style="display:none;">id</th>
-                <th>Település</th>
-                <th>Ellenőrzési pont</th>
-                <th>Loc. N:</th>
-                <th>Loc. E:</th>
-                <th>Útszám/ok</th>
-                <th>Táv (km)</th>
-                <th>Fel (m)</th>
-                <th>Le (m)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php 
-                $ossztav = 0;
-                $osszfel = 0;
-                $osszle = 0;
-                //var_dump($params['telepulesek']);
-                for ($i = 0; $i < count($params['telepulesek']); $i++) : 
-                    $telepulesek = $params['telepulesek'][$i];
-
-                    $ossztav += $telepulesek['tav'];
-                    $osszfel += $telepulesek['fel'];
-                    $osszle += $telepulesek['le'];
-                ?>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead >
                 <tr>
-                    <td style="display:none;"><?= $telepulesek['id']?></td>    
-                    <td><?= $telepulesek['telepules']?></td>
-                    <td><?= $telepulesek['hely']?></td>
-                    <td><?= $telepulesek['locn']?></td>
-                    <td><?= $telepulesek['loce']?></td> 
-                    <td><?= $telepulesek['utszam']?></td>   
-                    <td><?= $telepulesek['tav']?></td>
-                    <td><?= $telepulesek['fel']?></td>
-                    <td><?= $telepulesek['le']?></td>
+                    <th style="display:none;">id</th>
+                    <th>Település</th>
+                    <th>Ellenőrzési pont</th>
+                    <th>Loc. N:</th>
+                    <th>Loc. E:</th>
+                    <th>Útszám(ok)</th>
+                    <th>Táv (km)</th>
+                    <th>Fel (m)</th>
+                    <th>Le (m)</th>
                 </tr>
-            <?php endfor; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php 
+                    $ossztav = 0;
+                    $osszfel = 0;
+                    $osszle = 0;
+                    //var_dump($params['telepulesek']);
+                    for ($i = 0; $i < count($params['telepulesek']); $i++) : 
+                        $telepulesek = $params['telepulesek'][$i];
+
+                        $ossztav += $telepulesek['tav'];
+                        $osszfel += $telepulesek['fel'];
+                        $osszle += $telepulesek['le'];
+                    ?>
+                    <tr>
+                        <td style="display:none;"><?= $telepulesek['id']?></td>    
+                        <td><?= $telepulesek['telepules']?></td>
+                        <td><?= $telepulesek['hely']?></td>
+                        <td><?= $telepulesek['locn']?></td>
+                        <td><?= $telepulesek['loce']?></td> 
+                        <td><?= $telepulesek['utszam']?></td>   
+                        <td><?= $telepulesek['tav']?></td>
+                        <td><?= $telepulesek['fel']?></td>
+                        <td><?= $telepulesek['le']?></td>
+                    </tr>
+                <?php endfor; ?>
+            </tbody>
+        </table>
+    </div>
     <h3>
         Össztáv: 
         <?= $ossztav ?>

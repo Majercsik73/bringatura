@@ -26,6 +26,7 @@ $routes = [
         "/Bringatura_MKK/tervezo" => "plannerHandler",
         "/Bringatura_MKK/varosok-megtekintese" => "cityListHandler",  //countryListHandler
         "/Bringatura_MKK/utvonal-valaszto" => "routeSelectHandler",
+        "/Bringatura_MKK/utvonal-valaszto-km" => "routeSelectByKmHandler",
         '/Bringatura_MKK/utvonal' => 'routeListHandler',
         '/Bringatura_MKK/utvonal-save' => 'updateRoutePlanningHandler',
         '/Bringatura_MKK/utvonal-saved' => "savedRouteHandler",
@@ -151,7 +152,8 @@ function loginHandler()
     }
     
     session_start();
-    $_SESSION['userId'] = $user['id']; 
+    $_SESSION['userId'] = $user['id'];
+    $_SESSION['userName'] = $user['name']; 
     header('Location: '. getPathWithId($_SERVER['HTTP_REFERER']));  //  /Bringatura_MKK/utvonal-valaszto
     
 }
@@ -198,7 +200,7 @@ function logoutHandler()
     setcookie(session_name(),  '', 0, $params['path'], $params['domain'], $params['secure'], isset($params['httponly']));
     //miután töröltük a böngészőből, szerver oldalon is töröljük a munkamenetet:
     session_destroy();// Ne ragadjonak be az adatok!!!!
-    header('Location: /Bringatura_MKK/tervezo'); //.getPathWithId($_SERVER['HTTP_REFERER'])
+    header('Location: /Bringatura_MKK/'); //.getPathWithId($_SERVER['HTTP_REFERER'])
 
 }
 
@@ -239,7 +241,7 @@ function dataChange($telepulesek)
     return $telepulesek;
 }
 
-
+//Útvonalszakasz meghatározásához "utvonal-valaszto" url-ről, a fejléc tervezőjéből
 function routeSelectHandler()
 {
     session_start();
@@ -268,20 +270,60 @@ function routeSelectHandler()
     echo compileTemplate('wrapper.phtml', [
         'content' => compileTemplate('routeSelect.phtml',[
             'telepulesek' => $telepulesek,
-            'userId' => $_SESSION['userId']
+            'userId' => $_SESSION['userId'] ?? '',
+            'userName' => $_SESSION['userName'] ?? '',
+            'isAuthorized' => isLoggedIn()//megvizsgáljuk, hogy be van-e jelentkezve
         ]),
-        'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+        'isAuthorized' => isLoggedIn(),//megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
 
 }
 
+//Útvonal meghatározáshoz km alapján "utvonal-valaszto-km" url-ről, a fejléc tervezőjéből
+function routeSelectByKmHandler()
+{
+    session_start();
+    if(!isLoggedIn()) {
+        
+        //header('Location: /Bringatura_MKK/loginAndRegister'); 
+        echo compileTemplate("wrapper.phtml", [
+            'content' => compileTemplate('subscriptionForm.phtml', [
+                'info' => $_GET['info'] ?? '',
+                'isRegistration' => isset($_GET['isRegistration']),
+                'url' => getPathWithId($_SERVER['REQUEST_URI']),
+            ]),
+            'isAuthorized' => false, //// nincs bejelentkezve -->ezt küldjük a wrapperbe
+        ]);
+        return;
+    }
+
+    $pdo = getConnection();
+
+    $statement = $pdo->prepare('SELECT * FROM fooldal');
+    $statement->execute();
+    $telepulesek = $statement->fetchAll(PDO::FETCH_ASSOC);
+    
+    /*echo"<pre>";
+    var_dump($telepulesek);*/
+    echo compileTemplate('wrapper.phtml', [
+        'content' => compileTemplate('routeSelectByKm.phtml',[
+            'telepulesek' => $telepulesek,
+            'userId' => $_SESSION['userId'] ?? '',
+            'userName' => $_SESSION['userName'] ?? '',
+            'isAuthorized' => isLoggedIn()
+        ]),
+        'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
+    ]);
+}
 
 function homeHandler()
 {
     session_start();
     echo compileTemplate('wrapper.phtml', [
         'content' => compileTemplate('home.phtml',[
-            'userid' => $_SESSION['userId'] ?? '',
+            'userId' => $_SESSION['userId'] ?? '',
+            'userName' => $_SESSION['userName'] ?? '',
+            'isAuthorized' => isLoggedIn()
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);

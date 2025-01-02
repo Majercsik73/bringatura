@@ -1,46 +1,47 @@
 
 
-<div > <!--class="container"  -->
+<div> <!--class="container"  -->
     <br />
-    <table class="table table-striped">
-        <thead >
-            <tr>
-                <!--<th style="display:none;">id</th> -->
-                <th>Település</th>
-                <th>Ellenőrzési pont</th>
-                <th>Loc. N:</th>
-                <th>Loc. E:</th>
-                <th>Útszámok</th>
-                <th>Táv</th>
-                <th>Fel</th>
-                <th>Le</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php 
-                $ossztav = 0;
-                $osszfel = 0;
-                $osszle = 0;
-                foreach ($params['telepulesek'] as $telepules) : 
-                    $ossztav += $telepules['tav'];
-                    $osszfel += $telepules['fel'];
-                    $osszle += $telepules['le'];
-                ?>
-            <tr>
-                <!--<td style="display:none;"></*?= $telepules['id']?*/></td>    -->
-                <td><?= $telepules['telepules']?></td>
-                <td><?= $telepules['hely']?></td>
-                <td><?= $telepules['locn']?></td>
-                <td><?= $telepules['loce']?></td> 
-                <td><?= $telepules['utszam']?></td>   
-                <td><?= $telepules['tav']?></td>
-                <td><?= $telepules['fel']?></td>
-                <td><?= $telepules['le']?></td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead >
+                <tr>
+                    <!--<th style="display:none;">id</th> -->
+                    <th>Település</th>
+                    <th>Ellenőrzési pont</th>
+                    <th>Loc. N:</th>
+                    <th>Loc. E:</th>
+                    <th>Útszámok</th>
+                    <th>Táv</th>
+                    <th>Fel</th>
+                    <th>Le</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+                    $ossztav = 0;
+                    $osszfel = 0;
+                    $osszle = 0;
+                    foreach ($params['telepulesek'] as $telepules) : 
+                        $ossztav += $telepules['tav'];
+                        $osszfel += $telepules['fel'];
+                        $osszle += $telepules['le'];
+                    ?>
+                <tr>
+                    <!--<td style="display:none;"></*?= $telepules['id']?*/></td>    -->
+                    <td><?= $telepules['telepules']?></td>
+                    <td><?= $telepules['hely']?></td>
+                    <td><?= $telepules['locn']?></td>
+                    <td><?= $telepules['loce']?></td> 
+                    <td><?= $telepules['utszam']?></td>   
+                    <td><?= $telepules['tav']?></td>
+                    <td><?= $telepules['fel']?></td>
+                    <td><?= $telepules['le']?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
     <h3>
         Össztáv: 
         <?= $ossztav ?>

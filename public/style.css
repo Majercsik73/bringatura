@@ -46,3 +46,43 @@ table, tr, th, td {
     font-size: 20px;
     font-weight: bold;
 }
+
+/*.btn{
+    background-color: rgb(167, 236, 248);
+    margin-top: 2px;
+    margin-bottom: 2px;
+    text-align: center;
+    color: royalblue;
+    font-size: 22px;
+    font-weight: bolder;
+}*/
+
+#myBtn {
+    font-size:40px;
+    font-weight: bold;
+    width:60px;
+    height: 60px;
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    /*z-index: 99;*/
+    border: none;
+    outline: none;
+    background-color: rgba(252, 252, 253, 0.9);/*rgb(154, 154, 196);*/
+    color: blue;
+    cursor: pointer;
+    padding-bottom: 10px;
+    border-radius: 20px;
+}
+  
+#myBtn:hover {
+    background-color: rgb(173, 173, 173);
+}
+
+footer p{
+    text-align: center;
+    font-size: 15px;
+    padding-right: 35px;
+    padding-bottom: 20px;
+}
