@@ -146,7 +146,10 @@ function routeListKmHandler()
             'startId' => $startId,
             'touchId1' => $touchId1,
             'touchId2' => $touchId2,
-            'info' => $_GET['info'] ?? ''
+            'info' => $_GET['info'] ?? '',
+            'userId' => $_SESSION['userId'] ?? '',
+            'userName' => $_SESSION['userName'] ?? '',
+            'isAuthorized' => isLoggedIn()
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
@@ -173,10 +176,29 @@ function savedRouteKmHandler()
             'startId' => $startId,
             'touchId1' => $touchId1,
             'touchId2' => $touchId2,
-            'info' => $_GET['info'] ?? ''
+            'info' => $_GET['info'] ?? '',
+            'userId' => $_SESSION['userId'] ?? '',
+            'userName' => $_SESSION['userName'] ?? '',
+            'isAuthorized' => isLoggedIn()
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
+}
+
+function routeByKmToPdfHandler()
+{
+
+    $dompdf = new Dompdf();
+
+    $dompdf->set_option('enable_remote', TRUE);
+    $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routesByKmPdf?startId='.$_POST["startId"].'&touchId1='.
+            $_POST["touchId1"].'&touchId2='.$_POST["touchId2"].'&km='.$_POST["km"]);
+    
+    $dompdf->setPaper('A4', 'landscape');
+    
+    $dompdf->render();
+    
+    $dompdf->stream('negyedik.pdf', array("Attachment"=>0));
 }
 
 function routesByKmPdfHandler()
@@ -202,22 +224,6 @@ function routesByKmPdfHandler()
         ])
         
     ]);
-}
-
-function routeByKmToPdfHandler()
-{
-
-    $dompdf = new Dompdf();
-
-    $dompdf->set_option('enable_remote', TRUE);
-    $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routesByKmPdf?startId='.$_POST["startId"].'&touchId1='.
-            $_POST["touchId1"].'&touchId2='.$_POST["touchId2"].'&km='.$_POST["km"]);
-    
-    $dompdf->setPaper('A4', 'landscape');
-    
-    $dompdf->render();
-    
-    $dompdf->stream('negyedik.pdf', array("Attachment"=>0));
 }
 
 ?>

@@ -1,6 +1,14 @@
-<h1>Bringatúra_MKK_PDF</h1>                                        
-
-<table id='pdf'>
+<div>
+    <h1>MKK tervezett útvonal</h1>                                        
+    <br>
+        <h3>Indulás:&nbsp;&nbsp;&nbsp;<?= $params['telepulesek'][0]['telepules']?></h3>
+        <?php 
+            $hossz = count($params['telepulesek']);
+        ?>
+    <br>
+        <h3>Érkezés:&nbsp;&nbsp;&nbsp;<?= $params['telepulesek'][$hossz-1]['telepules']?></h3>
+    <br>
+    <table>
         <thead >
             <tr>
                 <th style="display:none;">id</th>
@@ -54,4 +62,4 @@
         <?= $osszle ?>
         méter
     </h3>
-</body>
+</div>

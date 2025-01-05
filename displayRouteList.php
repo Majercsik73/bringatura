@@ -121,7 +121,10 @@ function routeListHandler()
             'start' => $start,
             'touching' => $touching,
             'end' => $end,
-            'info' => $_GET['info'] ?? ''
+            'info' => $_GET['info'] ?? '',
+            'userId' => $_SESSION['userId'] ?? '',
+            'userName' => $_SESSION['userName'] ?? '',
+            'isAuthorized' => isLoggedIn()
             //'osszesTelepules' => $osszesTelepules,
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
@@ -147,7 +150,10 @@ function savedRouteHandler()
             'start' => $start,
             'touching' => $touching,
             'end' => $end,
-            'info' => $_GET['info'] ?? ''
+            'info' => $_GET['info'] ?? '',
+            'userId' => $_SESSION['userId'] ?? '',
+            'userName' => $_SESSION['userName'] ?? '',
+            'isAuthorized' => isLoggedIn()
             //'osszesTelepules' => $osszesTelepules,
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe

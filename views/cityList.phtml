@@ -1,7 +1,10 @@
 
-
+<?php if($params['isAuthorized']): //csak akkor jelenik meg a gomb, ha be van jelentkezve ?>
+    <h4 style="float: right">Bejelentkezve, mint: <?=$params['userName']?></h4>
+<?php endif; ?>
+<br>
+<br>
 <div> <!--class="container"  -->
-    <br />
     <div class="table-responsive">
         <table class="table table-striped">
             <thead >

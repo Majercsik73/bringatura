@@ -1,35 +1,55 @@
 
+<?php if($params['isAuthorized']): //csak akkor jelenik meg a gomb, ha be van jelentkezve ?>
+    <h4 style="float: right">Bejelentkezve, mint: <?=$params['userName']?></h4>
+<?php endif; ?>
+<br>
+<h1>MKK tervezett útvonal a teljes körre</h1>                                        
 <hr>
+<h3>Indulás, érkezés:&nbsp;&nbsp;&nbsp;<?= $params['telepulesek'][0]['telepules']?></h3>
+<hr>
+<h3>Szakasz távok:&nbsp;&nbsp;&nbsp;<?= $params['km']?> km</h3>
+<hr>
+
 <?php if ($params['info'] === "savedDatas") : ?>
-    <div class="alert alert-success">Adat mentés sikeres</div>
+    <div class="alert alert-success alert-dismissible">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Az adatok mentése sikeresen megtörtént</strong>
+    </div>
 <?php endif ?>
 
-<form method="POST" action="/Bringatura_MKK/genByKmPdf" formtarget="_blank">
-    <select class="form-select" name="startId" hidden>
-        <option selected value=<?= $params['startId']?>><?= $params['startId']?></option>
-    </select>
-    <select class="form-select" name="touchId1" hidden>
-        <option selected value=<?= $params['touchId1']?>><?= $params['touchId1']?></option>
-    </select>
-    <select class="form-select" name="touchId2" hidden>
-        <option selected value=<?= $params['touchId2']?>><?= $params['touchId2']?></option>
-    </select>
-    <select class="form-select" name="km" hidden>
-        <option selected value=<?= $params['km']?>><?= $params['km']?></option>
-    </select>
-    <button type="submit" class="btn btn-sm btn-warning m-2">Útvonal mentése PDF-ként</button>
-</form>
-
-<!-- Útvonal adatainak adatbázisba mentése -->
-<form action="/Bringatura_MKK/utvonal-km-save" method="GET">
-        <button type="submit" class="btn btn-sm btn-success m-2">Útvonal mentése</button>
-</form>
-
-<form action="/Bringatura_MKK/utvonal-valaszto-km" method="GET">
-    <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
-</form>
-
-
+<div class="row">
+    <div class="col-md" style="text-align: center">
+        <!-- Útvonal adatainak adatbázisba mentése -->
+        <form action="/Bringatura_MKK/utvonal-km-save" method="GET">
+                <button type="submit" class="btn btn-sm btn-success m-2">Útvonal mentése a fiókomba</button>
+        </form>
+    </div>
+    <div class="col-md" style="text-align: center">
+        <!-- Útvonal táblázatának mentése pdf-be -->
+        <form method="POST" action="/Bringatura_MKK/genByKmPdf" formtarget="_blank">
+            <select class="form-select" name="startId" hidden>
+                <option selected value=<?= $params['startId']?>><?= $params['startId']?></option>
+            </select>
+            <select class="form-select" name="touchId1" hidden>
+                <option selected value=<?= $params['touchId1']?>><?= $params['touchId1']?></option>
+            </select>
+            <select class="form-select" name="touchId2" hidden>
+                <option selected value=<?= $params['touchId2']?>><?= $params['touchId2']?></option>
+            </select>
+            <select class="form-select" name="km" hidden>
+                <option selected value=<?= $params['km']?>><?= $params['km']?></option>
+            </select>
+            <button type="submit" class="btn btn-sm btn-warning m-2">Útvonal mentése PDF-ként</button>
+        </form>
+    </div>
+    <div class="col-md" style="text-align: center">
+        <form action="/Bringatura_MKK/utvonal-valaszto-km" method="GET">
+            <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
+        </form>
+    </div>
+</div>
+<br>
+    
 <h3>Útvonal:</h3>
 <?php 
     $a = 1;
@@ -136,8 +156,6 @@
             </tbody>
         </table>
     </div>
-<hr>
-<hr>
 <h3>Szakasz táv: <?= $tav ?> km</h3>
 <h3>Szakasz fel: <?= $szakaszfel ?> méter</h3>
 <h3>Szakasz le: <?= $szakaszle ?> méter</h3>
@@ -149,7 +167,7 @@
                 
 <?php endwhile ?>
 <!-- A MEGADOTT KM-ENKÉNTI SZAKASZOKBA BELE NEM FÉRŐ TELEPÜLÉSEK -->
-<h3> 'a' értéke:  <?= $a ?> </h3>
+<!-- <h3> 'a' értéke:  <?= $a ?> </h3> -->
 <?php 
     if ($a < count($params['telepulesek'])) : ?>
     <h5><?= $szakaszSzama ?>. szakasz</h5>
@@ -170,8 +188,8 @@
     <tbody>
         <?php 
             $tav = 0;
-            $osszfel = 0;
-            $osszle = 0;
+            $szakaszfel = 0;
+            $szakaszle = 0;
             $first = true;
             $a -= 1;
             //var_dump($params['telepulesek']);
@@ -195,8 +213,8 @@
             
                 $tav += $telepulesek['tav'];
                 $ossztav += $telepulesek['tav'];
-                $osszfel += $telepulesek['fel'];
-                $osszle += $telepulesek['le'];
+                $szakaszfel += $telepulesek['fel'];
+                $szakaszle += $telepulesek['le'];
             ?>
             <tr>
                 <td style="display:none;"><?= $telepulesek['id']?></td>    
@@ -214,8 +232,9 @@
 </table>
 
 <h3>Szakasz táv: <?= $tav ?> km</h3>
-<h3>Összes fel: <?= $osszfel ?> méter</h3>
-<h3>Összes le: <?= $osszle ?> méter </h3>
+<h3>Szakasz fel: <?= $szakaszfel ?> méter</h3>
+<h3>Szakasz le: <?= $szakaszle ?> méter </h3>
 <h3>Össztáv: <?= $ossztav ?> km</h3>
 <?php endif; ?>
-<br>
+<hr>
+<hr>

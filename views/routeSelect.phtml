@@ -1,11 +1,10 @@
-
 <?php if($params['isAuthorized']): //csak akkor jelenik meg a gomb, ha be van jelentkezve ?>
-    <h3>Bejelentkezve: <?=$params['userName']?></h3>
+    <h4 style="float: right">Bejelentkezve, mint: <?=$params['userName']?></h4>
 <?php endif; ?>
-
+<br>
+<br>
 <div > <!-- class="container"  -->
     <div class="container-fluid">
-        <hr>
         <form action="/Bringatura_MKK/utvonal-saved" method="GET">
             <div class="forcenter">
                 <select class="form-select" name="userid" hidden>

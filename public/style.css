@@ -80,6 +80,10 @@ table, tr, th, td {
     background-color: rgb(173, 173, 173);
 }
 
+#pdf{
+    background-color: white;
+}
+
 footer p{
     text-align: center;
     font-size: 15px;

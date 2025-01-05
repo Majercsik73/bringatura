@@ -1,5 +1,10 @@
+
+<?php if($params['isAuthorized']): //csak akkor jelenik meg a gomb, ha be van jelentkezve ?>
+    <h4 style="float: right">Bejelentkezve, mint: <?=$params['userName']?></h4>
+<?php endif; ?>
 <br>
 <div ><!--  class="container"-->
+    <h1>MKK tervezett szakasz útvonala</h1>
     <hr>
     <h3>Indulás:&nbsp;&nbsp;&nbsp;<?= $params['telepulesek'][0]['telepules']?></h3>
     <?php 
@@ -9,31 +14,40 @@
     <h3>Érkezés:&nbsp;&nbsp;&nbsp;<?= $params['telepulesek'][$hossz-1]['telepules']?></h3>
     <hr>
     <?php if ($params['info'] === "savedDatas") : ?>
-        <div class="alert alert-success">
-            Adat mentés sikeres 
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>Az adatok mentése sikeresen megtörtént</strong>
         </div>
     <?php endif ?>
-    <!-- Útvonal pdf-be mentése -->
-    <form method="POST" action="/Bringatura_MKK/genRoutePdf" formtarget="_blank">
-        <select class="form-select" name="start" hidden>
-            <option selected value=<?= $params['start']?>><?= $params['start']?></option>
-        </select>
-        <select class="form-select" name="touching" hidden>
-            <option selected value=<?= $params['touching']?>><?= $params['touching']?></option>
-        </select>
-        <select class="form-select" name="end" hidden>
-            <option selected value=<?= $params['end']?>><?= $params['end']?></option>
-        </select>
-        <button type="submit" class="btn btn-sm btn-warning m-2">Útvonal mentése PDF-ként</button>
-    </form>
-    <!-- Útvonal adatainak adatbázisba mentése -->
-    <form action="/Bringatura_MKK/utvonal-save" method="GET">
-        <button type="submit" class="btn btn-sm btn-success m-2">Útvonal mentése</button>
-    </form>
-
-    <form action="/Bringatura_MKK/utvonal-valaszto" method="GET">
-        <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
-    </form>
+    <div class="row">
+        <div class="col-md" style="text-align: center">  
+            <!-- Útvonal adatainak adatbázisba mentése -->
+            <form action="/Bringatura_MKK/utvonal-save" method="GET">
+                <button type="submit" class="btn btn-sm btn-success m-2">Útvonal mentése a fiókomba</button>
+            </form>
+        </div>
+        
+        <!-- Útvonal pdf-be mentése -->
+        <div class="col-md" style="text-align: center">
+            <form method="POST" action="/Bringatura_MKK/genRoutePdf" formtarget="_blank">
+                <select class="form-select" name="start" hidden>
+                    <option selected value=<?= $params['start']?>><?= $params['start']?></option>
+                </select>
+                <select class="form-select" name="touching" hidden>
+                    <option selected value=<?= $params['touching']?>><?= $params['touching']?></option>
+                </select>
+                <select class="form-select" name="end" hidden>
+                    <option selected value=<?= $params['end']?>><?= $params['end']?></option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-warning m-2">Útvonal mentése PDF-ként</button>
+            </form>
+        </div>
+        <div class="col-md" style="text-align: center">
+            <form action="/Bringatura_MKK/utvonal-valaszto" method="GET">
+                <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
+            </form>
+        </div>
+    </div>
     <br>
     
     <h3>Útvonal:</h3>

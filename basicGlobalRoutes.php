@@ -25,6 +25,9 @@ function cityListHandler()
     echo compileTemplate('wrapper.phtml', [
         'content' => compileTemplate('cityList.phtml',[
             'telepulesek' => $telepulesek,
+            'userId' => $_SESSION['userId'] ?? '',
+            'userName' => $_SESSION['userName'] ?? '',
+            'isAuthorized' => isLoggedIn()
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);

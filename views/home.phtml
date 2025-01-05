@@ -1,6 +1,9 @@
+<?php if($params['isAuthorized']): //csak akkor jelenik meg a gomb, ha be van jelentkezve ?>
+    <h4 style="float: right">Bejelentkezve, mint: <?=$params['userName']?></h4>
+<?php endif; ?>
+<br>
+<br>
 <div class="container">
-    <?php if($params['isAuthorized']): //csak akkor jelenik meg a gomb, ha be van jelentkezve ?>
-        <h3>Bejelentkezve: <?=$params['userName']?></h3>
-    <?php endif; ?>
+    
     <h1>Ide kerül a nyitóoldal mindenfajta dolga!</h1>
 </div>
