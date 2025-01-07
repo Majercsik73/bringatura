@@ -39,7 +39,8 @@
                 <select class="form-select" name="end" hidden>
                     <option selected value=<?= $params['end']?>><?= $params['end']?></option>
                 </select>
-                <button type="submit" class="btn btn-sm btn-warning m-2">Útvonal mentése PDF-ként</button>
+                <!-- A "tooltip" megjelenítő script a 114. sortól!!!   -->
+                <button type="submit" class="btn btn-sm btn-warning m-2" data-bs-toggle="tooltip" title="A PDF generálása kb. 10 másodpercig tart!">Útvonal mentése PDF-ként</button>
             </form>
         </div>
         <div class="col-md" style="text-align: center">
@@ -110,3 +111,10 @@
         méter
     </h3>
 </div>
+<!-- Az "Útvonal mentése PDF-ként" nyomógomb tooltips megjelenítése -->
+<script>
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+</script>

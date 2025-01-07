@@ -39,7 +39,8 @@
             <select class="form-select" name="km" hidden>
                 <option selected value=<?= $params['km']?>><?= $params['km']?></option>
             </select>
-            <button type="submit" class="btn btn-sm btn-warning m-2">Útvonal mentése PDF-ként</button>
+            <!-- A "tooltip" megjelenítő script a 240. sortól!!!   -->
+            <button type="submit" class="btn btn-sm btn-warning m-2" data-bs-toggle="tooltip" title="A PDF generálása kb. 30 másodpercig tart!">Útvonal mentése PDF-ként</button>
         </form>
     </div>
     <div class="col-md" style="text-align: center">
@@ -162,9 +163,7 @@
 <h3>Össztáv: <?= $ossztav ?> km</h3>
 <hr>
 <hr>
-<?php $szakaszSzama++; ?>
-
-                
+<?php $szakaszSzama++; ?>   
 <?php endwhile ?>
 <!-- A MEGADOTT KM-ENKÉNTI SZAKASZOKBA BELE NEM FÉRŐ TELEPÜLÉSEK -->
 <!-- <h3> 'a' értéke:  <?= $a ?> </h3> -->
@@ -175,14 +174,14 @@
     <thead >
         <tr>
             <th style="display:none;">id</th>
-            <th>település</th>
-            <th>hely</th>
-            <th>locn</th>
-            <th>loce</th>
-            <th>útszám</th>
-            <th>táv</th>
-            <th>fel</th>
-            <th>le</th>
+            <th>Település</th>
+            <th>Ellenőrzési pont</th>
+            <th>Loc. N:</th>
+            <th>Loc. E:</th>
+            <th>Útszám/ok</th>
+            <th>Táv (km)</th>
+            <th>Fel (m)</th>
+            <th>Le (m)</th>
         </tr>
     </thead>
     <tbody>
@@ -238,3 +237,10 @@
 <?php endif; ?>
 <hr>
 <hr>
+<!-- Az "Útvonal mentése PDF-ként" nyomógomb tooltips megjelenítése -->
+<script>
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+</script>

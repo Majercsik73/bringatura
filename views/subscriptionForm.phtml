@@ -6,29 +6,36 @@
 
 <?php if ($params['info'] === "registrationSuccessful") : ?>
     <div class="alert alert-success">
-        Regisztráció sikeres 
+        Regisztráció sikeres!
     </div>
 <?php endif ?>
 
 <?php if ($params['info'] === "invalidCredentials") : ?>
     <div class="alert alert-danger">
-        Helytelen bejelentkezési adatok
+        Helytelen bejelentkezési adatok! Kérem adja meg a helyes adatokat!
     </div>
 <?php endif ?>
 
 <?php if ($params['info'] === "existingEmail") : ?>
     <div class="alert alert-danger">
-        A megadott email címmel már van regisztráció! Kérem adjon meg egy másikat!
+        A megadott email címmel már van regisztráció! Kérem adjon új adatokat!
     </div>
 <?php endif ?>
 
 <?php if ($params['info'] === "noData") : ?>
     <div class="alert alert-danger">
-        Regisztrációhoz a mezők kitöltése kötelező!
+        Regisztrációhoz minden mező kitöltése kötelező! Kérem adja meg újra az adatokat!
     </div>
 <?php endif ?>
 
-<?php if ($params['isRegistration'] || $params['info'] === "existingEmail" || $params['info'] === "noData") : ?>
+<?php if ($params['info'] === "pwError") : ?>
+    <div class="alert alert-danger">
+        A megadott jelszavak nem azonosak! Kérem adja meg újra az adatokat!
+    </div>
+<?php endif ?>
+
+
+<?php if ($params['isRegistration'] || $params['info'] === "existingEmail" || $params['info'] === "noData" || $params['info'] === "pwError") : ?>
     <form action="/Bringatura_MKK/register" method="POST"> 
     <label class="w-100">
         Felhasználónév:
@@ -42,7 +49,11 @@
 
     <label class="w-100">
         Jelszó:
-        <input class="form-control" type="password" name="password">
+        <input class="form-control" type="password" name="password_1">
+    </label>
+    <label class="w-100">
+        Jelszó mégegyszer:
+        <input class="form-control" type="password" name="password_2">
     </label>
     <button type="submit" class="btn btn-success form-control">Regisztráció</button>
     Van már felhasználói fiókod?

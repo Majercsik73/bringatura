@@ -83,36 +83,58 @@ function getPathWithId($url)
 
 function registrationHandler()
 {
-    if(isset($_POST["email"]) && !empty($_POST["email"]) && 
-        isset($_POST["password"]) && !empty($_POST["password"]))
+    if(isset($_POST["name"]) && !empty($_POST["name"]) && 
+        isset($_POST["email"]) && !empty($_POST["email"]) &&
+        isset($_POST["password_1"]) && !empty($_POST["password_2"]) && 
+        isset($_POST["password_2"]) && !empty($_POST["password_2"]))
     {
+        // A test_input fügvénnyel megtisztítjuk a postolt adatokat a kártékony scriptektől
+        $name = test_input($_POST["name"]);  //test_input a 198. oldaltól
+        $email = test_input($_POST["email"]);
+        $pw1 = test_input($_POST["password_1"]);
+        $pw2 = test_input($_POST["password_2"]);
         
-        $email = $_POST["email"];
+        //$email = $_POST["email"];
 
-        if(!emailCheck($email))
+        if(!emailCheck($email)) //emailCheck a 183. sortól
         {
             header('Location: ' . getPathWithId($_SERVER['HTTP_REFERER']) . '?&info=existingEmail');
             return;
         }
-
+        // Megvizsgáljuk, hogy a jelszavek megegyeznek-e
+        if($pw1 != $pw2){
+            header('Location: ' . getPathWithId($_SERVER['HTTP_REFERER']) . '?&info=pwError');
+            return;
+        }
+        // Ha minden rendben van elindítjuk az adatbázisba való betöltést
         $pdo = getConnection();
         $statment = $pdo->prepare(
             "INSERT INTO `users` (`name`, `email`, `password`, `createdAt`)  
             VALUES (?, ?, ?, ?);"
         );
         $statment->execute([
-            $_POST["name"],
-            $_POST["email"],
-            password_hash($_POST["password"], PASSWORD_DEFAULT),
+            $name, //$_POST["name"],
+            $email, //$_POST["email"],
+            password_hash($pw1, PASSWORD_DEFAULT), //$_POST["password"]
             time()
         ]);
-        // az adatbázisban beállítjuk a kezdőértékeket az elmentett útvonalaknál
+        // az adatbázisban beállítjuk a kezdőértékeket mindkét elmentett útvonalhoz
         insertNewUserPlanningDatas();
 
-        unset($_POST);// töröljük a globális változót
+        //Email küldése regisztrációkor
+        $to = $email; //"somebody@example.com";
+        $subject = "My subject";
+        $txt = "Hello world!";
+        $headers = "From: webmaster@example.com" . "\r\n" .
+                "CC: somebodyelse@example.com";
+
+        mail($to,$subject,$txt,$headers);
+
+        // töröljük a globális változót
+        unset($_POST);
         
-        // A következő minden "header('Location:...)"-ben az '&info' elé azért kell a '?'(kérdőjel), mert
-        //a getPathWithId levágja az eredetileg ott lévő '?'-et!!!
+// A következő minden "header('Location:...)"-ben az '&info' elé azért kell a '?'(kérdőjel), mert
+//a getPathWithId levágja az eredetileg ott lévő '?'-et!!!
         header('Location: ' . getPathWithId($_SERVER['HTTP_REFERER']) . '?&info=registrationSuccessful');
     }
 
@@ -173,6 +195,13 @@ function emailCheck($email): bool
     return true;
 }
 
+function test_input($data) 
+{
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+  }
 
 function isLoggedIn(): bool
 {
