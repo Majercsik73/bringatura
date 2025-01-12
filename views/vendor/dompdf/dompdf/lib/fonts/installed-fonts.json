@@ -1,0 +1,17 @@
+{
+    "muli": {
+        "normal": "C:\\xampp\\htdocs\\Bringatura_MKK\\src\\views\\vendor\\dompdf\\dompdf\/lib\/fonts\/muli_normal_08ae51711ac331644a22af80f5557319",
+        "600": "C:\\xampp\\htdocs\\Bringatura_MKK\\src\\views\\vendor\\dompdf\\dompdf\/lib\/fonts\/muli_600_1d5fdcb5024e0f9e84a9951e1ebae778",
+        "bold": "C:\\xampp\\htdocs\\Bringatura_MKK\\src\\views\\vendor\\dompdf\\dompdf\/lib\/fonts\/muli_bold_7011df49f6e372fa80ed1d66328744b9",
+        "800": "muli_800_716f4a13a07db1a75684f33417f5330f"
+    },
+    "encode sans expanded": {
+        "normal": "encode_sans_expanded_normal_79b3a8b8d0cbdada9ac695fae9b96c3a"
+    },
+    "mona sans": {
+        "normal": "mona_sans_normal_177f3af82da632945cf76055a8243d19"
+    },
+    "montserrat subrayada": {
+        "normal": "montserrat_subrayada_normal_a1c7f091cade40ad844583ec87b969ff"
+    }
+}

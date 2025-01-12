@@ -38,7 +38,24 @@ function cityListHandler()
 
 function htmlToPdfHandler()
 {
-    $dompdf = new Dompdf();
+    ob_end_clean(); // töröljük a kimeneti puffert
+
+    // Dompdf beállítások
+    $options = new Options(); // opciók használatának engedélyezése
+    $options->set('isRemoteEnabled', true);
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isFontSubsettingEnabled', true); // Betűkészlet beágyazásának engedélyezése
+    $options->set('defaultFont', 'DejaVu Sans');
+
+    $dompdf = new Dompdf($options);
+
+    // $dompdf->getOptions()->set('isFontSubsettingEnabled', true);
+
+    $fontDir = "views/vendor/dompdf\dompdf/lib/fonts"; // A betűtipus elérési útja
+
+    $dompdf->getOptions()->set('fontDir', $fontDir);
+    $dompdf->getOptions()->set('fontCache', $fontDir);
+
 
     $dompdf->set_option('enable_remote', TRUE);
     $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/listAllPdf?'); //generatePdf?  //http://localhost/Bringatura_MKK/routeListPdf
@@ -46,12 +63,12 @@ function htmlToPdfHandler()
     //$dompdf->loadHtml($html);
     
     $dompdf->setPaper('A4', 'landscape');
-    //$dompdf->setFont('Arial', 'ital', 8);
+    
     // Render the HTML as PDF
     $dompdf->render();
     
     // Output the generated PDF to Browser
-    $dompdf->stream('dik.pdf', array("Attachment"=>0));
+    $dompdf->stream('MKK_teljes.pdf', array("Attachment"=>0));
 }
 
 

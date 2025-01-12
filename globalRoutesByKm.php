@@ -3,7 +3,7 @@
 require_once "views/vendor/autoload.php";
 
 use Dompdf\Dompdf;
-
+use Dompdf\Options;
 
 function routeByKmDatas($start, $touch1, $touch2, $km)
 {
@@ -188,7 +188,23 @@ function savedRouteKmHandler()
 function routeByKmToPdfHandler()
 {
 
-    $dompdf = new Dompdf();
+    ob_end_clean(); // töröljük a kimeneti puffert
+
+    // Dompdf beállítások
+    $options = new Options(); // opciók használatának engedélyezése
+    $options->set('isRemoteEnabled', true);
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isFontSubsettingEnabled', true); // Betűkészlet beágyazásának engedélyezése
+    $options->set('defaultFont', 'DejaVu Sans');
+
+    $dompdf = new Dompdf($options);
+
+    // $dompdf->getOptions()->set('isFontSubsettingEnabled', true);
+
+    $fontDir = "views/vendor/dompdf\dompdf/lib/fonts"; // A betűtipus elérési útja
+
+    $dompdf->getOptions()->set('fontDir', $fontDir);
+    $dompdf->getOptions()->set('fontCache', $fontDir);
 
     $dompdf->set_option('enable_remote', TRUE);
     $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routesByKmPdf?startId='.$_POST["startId"].'&touchId1='.
@@ -198,7 +214,7 @@ function routeByKmToPdfHandler()
     
     $dompdf->render();
     
-    $dompdf->stream('negyedik.pdf', array("Attachment"=>0));
+    $dompdf->stream('MKK_útvonal_km.pdf', array("Attachment"=>0));
 }
 
 function routesByKmPdfHandler()

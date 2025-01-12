@@ -3,7 +3,9 @@
 require_once "views/vendor/autoload.php";
 require_once "basicGlobalRoutes.php";
 require_once "globalRoutesByKm.php";
+
 use Dompdf\Dompdf;
+use Dompdf\Options;
 
 
 function routeListDatas($start, $touching, $end)
@@ -164,24 +166,41 @@ function savedRouteHandler()
 
 function routeListToPdfHandler()
 {
-    $dompdf = new Dompdf();
+    ob_end_clean(); // töröljük a kimeneti puffert
 
-    $dompdf->set_option('enable_remote', TRUE);
+    // Dompdf beállítások
+    $options = new Options(); // opciók használatának engedélyezése
+    $options->set('isRemoteEnabled', true);
+    $options->set('isHtml5ParserEnabled', true);
+    $options->set('isFontSubsettingEnabled', true); // Betűkészlet beágyazásának engedélyezése
+    $options->set('defaultFont', 'DejaVu Sans');
+
+    $dompdf = new Dompdf($options);
+
+    // $dompdf->getOptions()->set('isFontSubsettingEnabled', true);
+
+    $fontDir = "views/vendor/dompdf\dompdf/lib/fonts"; // A betűtipus elérési útja
+
+    $dompdf->getOptions()->set('fontDir', $fontDir);
+    $dompdf->getOptions()->set('fontCache', $fontDir);
+
+
     $dompdf->loadHtmlFile('http://localhost/Bringatura_MKK/routeListPdf?start='.
                             $_POST['start'].'&touching='.$_POST['touching'].'&end='.$_POST['end']);
     // A fenti címmel a generatRouteListToPdfHandlerben történik a tényleges megjelenítés
     
-    $dompdf->setPaper('A4', 'landscape');
+    $dompdf->setPaper('A4', 'landscape'); // Lapméret; Tájolás ( portrait )
     
     $dompdf->render();
     
-    $dompdf->stream('negyedik.pdf', array("Attachment"=>0)); // Attachment => nem menti egyből, külön lapon megnyitja
+    $dompdf->stream('MKK_útvonal.pdf', array("Attachment"=>0)); // Attachment => nem menti egyből, külön lapon megnyitja
     
 }
 
 
 function generateRouteListToPdfHandler()
 {
+
     session_start();
 
     // Az adatok a routeListToPdfHandler-ből jönnek:
