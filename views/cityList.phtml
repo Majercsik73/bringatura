@@ -4,7 +4,29 @@
 <?php endif; ?>
 <br>
 <br>
-<div> <!--class="container"  -->
+<div> <!--class="container"  
+    <div class="row">
+        <div class="col-md" style="text-align: center">-->
+            <!-- Útvonal adatainak adatbázisba mentése -->
+            <form action="/Bringatura_MKK/generatePdf" method="GET">
+                    <button type="submit" class="btn btn-sm btn-warning m-2" data-bs-toggle="tooltip" title="A PDF generálása kb. 30 másodpercig tart!">Teljes útvonal mentése PDF-ként</button>
+            </form>
+  <!--      </div>
+
+        <div class="col-md" style="text-align: center">
+            <form action="/Bringatura_MKK/tervezo" method="GET">
+                <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
+            </form>
+        </div>
+    </div>
+    
+    <form method="get" action="/Bringatura_MKK/generatePdf" formtarget="_blank">
+        <button type="submit" class="btn btn-sm btn-primary m-2">Generate PDF</button>
+    </form>
+    <form action="/Bringatura_MKK/tervezo" method="GET">
+        <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
+    </form>
+-->
     <div class="table-responsive">
         <table class="table table-striped">
             <thead >
@@ -60,10 +82,11 @@
         <?= $osszle ?>
         méter
     </h3>
-    <form method="get" action="/Bringatura_MKK/generatePdf" formtarget="_blank">
-        <button type="submit" class="btn btn-sm btn-primary m-2">Generate PDF</button>
-    </form>
-    <form action="/Bringatura_MKK/tervezo" method="GET">
-        <button type="submit" class="btn btn-sm btn-primary m-2">Vissza a Tervezőbe</button>
-    </form>
 </div>
+<!-- A "Teljes útvonal mentése PDF-ként" nyomógomb tooltips megjelenítése -->
+<script>
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+</script>

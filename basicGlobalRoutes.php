@@ -3,7 +3,9 @@
 require_once "views/vendor/autoload.php";
 require_once "displayRouteList.php";
 require_once "globalRoutesByKm.php";
+
 use Dompdf\Dompdf;
+use Dompdf\Options;
 
 function adatok()
 {
@@ -75,10 +77,12 @@ function htmlToPdfHandler()
 function generatePdfHandler()
 {
     $telepulesek = adatok();
-    
+    $allOrPlan = 'teljes'; // routePdfSite fejlécébe küldjük
+
     echo compileTemplate('PdfWrapper.phtml', [
         'content' => compileTemplate('routePdfSite.phtml',[
             'telepulesek' => $telepulesek,
+            'allOrPlan' => $allOrPlan
         ])
         //'isAuthorized' => isLoggedIn() //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);

@@ -207,6 +207,7 @@ function generateRouteListToPdfHandler()
     $start = $_GET["start"];
     $touching = $_GET["touching"];
     $end = $_GET["end"];
+    $allOrPlan = 'tervezett'; // routePdfSite fejlécébe küldjük
     
     $telepulesek = routeListDatas($start, $touching, $end);
     
@@ -215,7 +216,8 @@ function generateRouteListToPdfHandler()
             'telepulesek' => $telepulesek,
             'start' => $start,
             'touching' => $touching,
-            'end' => $end
+            'end' => $end,
+            'allOrPlan' => $allOrPlan
         ]),
         'isAuthorized' => isLoggedIn(), //megvizsgáljuk, hogy be van-e jelentkezve -->ezt küldjük a wrapperbe
     ]);
