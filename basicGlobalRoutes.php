@@ -3,6 +3,7 @@
 require_once "views/vendor/autoload.php";
 require_once "displayRouteList.php";
 require_once "globalRoutesByKm.php";
+require_once "contact.php";
 
 use Dompdf\Dompdf;
 use Dompdf\Options;

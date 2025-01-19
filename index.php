@@ -7,6 +7,7 @@ error_reporting(E_ALL);
 require_once "basicGlobalRoutes.php";
 require_once "displayRouteList.php";
 require_once "globalRoutesByKm.php";
+require_once "contact.php";
 require_once "views/vendor/autoload.php";
 use Dompdf\Dompdf;
 
@@ -38,7 +39,7 @@ $routes = [
         '/Bringatura_MKK/routeListPdf' => 'generateRouteListToPdfHandler',
         '/Bringatura_MKK/routesByKmPdf' => 'routesByKmPdfHandler',
         '/Bringatura_MKK/loginAndRegister' => 'loginAndRegisterHandler',
-        
+        '/Bringatura_MKK/contact' => 'contactHandler'
     ],  
     "POST" => [
         '/Bringatura_MKK/genPdf' => 'htmlToPdfHandler',
@@ -47,6 +48,8 @@ $routes = [
         '/Bringatura_MKK/register' => 'registrationHandler',
         '/Bringatura_MKK/login' => 'loginHandler',
         '/Bringatura_MKK/logout' => 'logoutHandler',
+        '/Bringatura_MKK/submit-message' => 'submitMessageHandler',
+        '/Bringatura_MKK/send-mails' => 'sendMailsHandler'
 
     ],
 ];
@@ -80,6 +83,7 @@ function getPathWithId($url)
     //var_dump($parsed['path'] . "?id=" . $queryParams['id']);
     return $parsed['path']; // . "?id=" . $queryParams['id'];
 }
+
 
 function registrationHandler()
 {

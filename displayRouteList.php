@@ -4,6 +4,7 @@ require_once "views/vendor/autoload.php";
 require_once "basicGlobalRoutes.php";
 require_once "globalRoutesByKm.php";
 
+
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
